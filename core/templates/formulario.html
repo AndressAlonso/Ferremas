@@ -1,0 +1,89 @@
+{% extends "plantilla.html" %}
+{% load static %}
+{% block 'content' %}
+<main class="bg-white rounded-3 mt-4 mb-4 pb-3 pt-3 container">
+  <div id="main-header" class="">
+    <div id="title" class="text-center pb-2 mb-2 border border-dark-subtle border-2 border-bottom-0 border-top-0">
+      <h1>- Contáctanos -</h1>
+    </div>
+    <div id="Descripcion" class="border border-dark-subtle border-2 border-bottom-0 border-top-0 container ">
+      <h2 class="fs-5">Formulario de contacto</h2>
+      <p>Hola, para poder ayudarte, te pedimos que completes correctamente todos los campos solicitados en el
+        siguiente formulario. Uno de nuestros ejecutivos de atención al cliente te contactará en un plazo de 24
+        horas hábiles. Recuerda que nuestros horarios de atención son: lunes a domingo desde las 09:00 hasta las
+        18:00 horas, excepto feriados/festivos.</p>
+    </div>
+  </div>
+  
+  <div id="Main-formularios" class="bg-white">
+    <form id="formContacto">
+    <div class="d-flex flex-wrap justify-content-between gap-2">
+     
+        <div class="d-flex flex-column gap-3" style="flex: 1 1 48%; min-width: 280px;">
+        
+            <div class="form-group">
+                <label for="FormControlNombre" class="form-label">Nombre*</label>
+                <input type="text" class="form-control" placeholder="Tu nombre" name="nombre" id="FormControlNombre">
+            </div>
+            <div>
+                <label for="FormControlApellido" class="form-label">Apellido*</label>
+                <input type="text" class="form-control" name="apellido" placeholder="Tu apellido" id="FormControlApellido">
+            </div>
+            <div>
+                <label for="FormControlRut" class="form-label">RUT*</label>
+                <input type="text" class="form-control" name="rut" id="FormControlRut" placeholder="Tu RUT">
+                <span class="text-black-50">El RUT debe ser sin puntos y con guion. Ejemplo: 12123123-1</span>
+            </div>
+            <div>
+                <label for="FormControlTelefono" class="form-label">Teléfono*</label>
+                <div class="d-flex gap-1">
+                    <select name="TelPaises" id="SSTelPaises" name="sufijotelefono" class="form-select">  
+                    </select>
+                    <input type="tel" class="form-control" name="telefono" id="FormControlTelefono" placeholder="Tu Numero de Telefono">
+                    
+                </div>
+                <span class="text-black-50">El número de teléfono debe contener más de 9 números</span>
+            </div>
+            <div>
+                <label for="FormControlEmail" class="form-label">Correo Electrónico*</label>
+                <input type="email" class="form-control" name="email" id="FormControlEmail" placeholder="Tu correo">
+                <span class="text-black-50">El Correo Debe Seguir el Siguiente Ejemplo: name@example.com</span>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-3" style="flex: 1 1 48%; min-width: 280px;">
+            <div>
+                <label for="FormControlMotivo" class="form-label">Motivo*</label>
+                <select id="id_lista_motivo" name="motivo" class="form-select" >
+                    <option value="-1" selected>- Seleccione Motivo -</option>
+                    <option value="2">Consultas</option>
+                    <option value="3">Solicitudes</option>
+                    <option value="4">Reclamos</option>
+                </select>
+            </div>
+            <div>
+                <label for="DataListclasificacion" class="form-label">Clasificación*</label>
+                <select id="id_lista_clasificacion" name="clasificacion" class="form-select">
+                    <option value="-1" selected>-Selecciona un Motivo-</option>
+                </select>
+            </div>
+            <div>
+                <label for="FormControlBoleta" class="form-label">Numero de Boleta o Factura</label>
+                <input type="text" class="form-control" name="factura/boleta" placeholder="Tu Numero de Boleta o Factura"  id="FormControlBoleta">
+            </div>
+            <div>
+                <label for="FormControlText" class="form-label">Comentarios</label>
+                <textarea class="form-control w-100" name="comentario" id="FormControlText" rows="7" placeholder="Tu comentario">
+                </textarea>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4 flex-column gap-3 justify-content-center align-items-center">
+        <div id="errores"></div>
+        <input type="submit" id="bEnviar" class="btn btn-dark w-50">
+    </div>
+  </form>
+</div>
+</main>
+<script src="js/Validar.js"></script>
+<link rel="stylesheet" href="css/Validar.css">
+{% endblock 'content' %}

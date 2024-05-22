@@ -1,0 +1,50 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block 'content' %}
+<div class="container my-5 ">
+  <div class="card">
+      <div class="row g-0">
+          <div class="col-md-4">
+              <img src="Img-carousel/pc2.jpg" alt="Imagen del producto" class="img-thumbnail">
+          </div>
+          <div class="col-md-8 text-dark">
+              <div class="card-body">
+                  <h5 class="card-title">MSI Katana GF66 12UC</h5>
+                  <p class="card-text">
+                      <ul class="text-dark">
+                          <li>Marca: MSI</li>
+                          <li>Modelo: Katana GF66 12UC</li>
+                          <li>Color: Negro</li>
+                          <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+                          <li>Tarjeta gráfica: NVIDIA GeForce RTX 3050 (4GB GDDR6)</li>
+                          <li>Pantalla: 15.6" IPS-Level FHD, 144Hz, Tr+Tf 25ms, 45% NTSC, ANTI-GLARE / 1920 x 1080</li>
+                          <li>Sistema Operativo: Windows 11 Home</li>
+                          <li>Memoria RAM: 8GB DDR4 SDRAM 1600(3200)MHz (Máx. 64GB de Memoria RAM) 2 Slot</li>
+                          <li>Almacenamiento: 512GB PCIe GEN4x4 w/o DRAM NVMe</li>
+                          <li>Dispositivos Comunicaciones: Wifi 6 / LAN: REALTEK/RTL8111H-VB-CG/ Bluetooth:INTEL/AX201.NGWG.NVW</li>
+                          <li>Puertos: USB x 2 (3.2 Gen 1)/ 1 x HDMI (4K @60Hz)/ 1 x Ethernet (RJ-45)/ 1 x combo audio jack (3.5mm)</li>
+                          <li>Batería: 3 Celdas 53.5WH</li>
+                          <li>Dimensión: 359 x 259 x 24.9 mm</li>
+                          <li>Peso: 2.25 Kg</li>
+                      </ul>
+                  </p>
+                <div>
+                  <div class="d-flex gap-1">
+                  <h3 class="text-success" id="precioClp">15000</h3><h3 class="text-success" id="divisa">divisa</h3></div>
+                  <select name="indicador" id="ssindicador">
+                    <option value="-1">Eliga Divisa</option>
+                  </select>
+                </div>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-dark me-md-2" type="button">Añadir al carrito</button>
+                    <button class="btn btn-dark" type="button">Comprar</button>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock 'content' %}
+ 
