@@ -141,12 +141,12 @@ function validarFormulario() {
   });
 }
 
-validarFormulario();
-validarInput("FormControlNombre");
-validarInput("FormControlApellido");
-validarInput("FormControlRut");
-validarInput("FormControlTelefono");
-validarInput("FormControlEmail");
-validarInput("id_lista_motivo");
-validarInput("FormControlBoleta");
-validarInput("id_lista_clasificacion")
+  validarFormulario();
+  validarInput("FormControlNombre");
+  validarInput("FormControlApellido");
+  validarInput("FormControlRut");
+  validarInput("FormControlTelefono");
+  validarInput("FormControlEmail");
+  validarInput("id_lista_motivo");
+  validarInput("FormControlBoleta");
+  validarInput("id_lista_clasificacion");

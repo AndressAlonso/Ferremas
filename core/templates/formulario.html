@@ -1,7 +1,7 @@
 {% extends "plantilla.html" %}
 {% load static %}
 {% block 'content' %}
-<main class="bg-white rounded-3 mt-4 mb-4 pb-3 pt-3 container">
+<main class="bg-white rounded-3 mt-4 mb-4 pb-3 pt-3 container" onload="GetPaises()">
   <div id="main-header" class="">
     <div id="title" class="text-center pb-2 mb-2 border border-dark-subtle border-2 border-bottom-0 border-top-0">
       <h1>- Contáctanos -</h1>
@@ -84,6 +84,7 @@
   </form>
 </div>
 </main>
-<script src="js/Validar.js"></script>
-<link rel="stylesheet" href="css/Validar.css">
+<script src="{% static 'js/Validar.js' %}"></script>
+<script src="{% static 'js/Formulario.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/Validar.css' %}">
 {% endblock 'content' %}
