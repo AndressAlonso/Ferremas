@@ -1,10 +1,10 @@
 {% extends "plantilla.html" %}
 {% load static %}
-{% block 'content' %}
+{% block content %}
 <main class="container mt-4 mb-4 rounded-3 bg-white">
   <div id="registro" class="bg-white d-flex container-md flex-column row-gap-3">
     <div id="titulo" class="d-flex border-black border-bottom border-success-subtle pb-3 pt-3">
-      <h1 class="">
+      <h1 class="fw-bold">
         <svg width="70" height="70" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="60" height="60" fill="#" />
           <path
@@ -19,8 +19,8 @@
     </div>
     <div id="registro-datosPers" class="border-black border-bottom border-success-subtle pb-5">
       <div id="datosPers-titulo">
-        <h4>Ingreso de datos</h4>
-        <p>Registro nos permitirá conocerte y no tener que solicitarte los datos nuevamente cuando quieras comprar en TechTreasureTroop. Los campos marcados (*) deben ser llenados obligatoriamente.</p>
+        <h4 class="fw-semibold">Ingreso de datos</h4>
+        <p class="fw-light">Registro nos permitirá conocerte y no tener que solicitarte los datos nuevamente cuando quieras comprar en TechTreasureTroop. Los campos marcados (*) deben ser llenados obligatoriamente.</p>
       </div>
       <div id="forms1" class="d-md-flex gap-4">
         <div id="form1-left" class="flex-fill gap-4 d-flex flex-column">
@@ -110,4 +110,4 @@
     
 </main>
 
-{% endblock 'content' %}
+{% endblock content %}

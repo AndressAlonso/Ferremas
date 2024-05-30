@@ -1,24 +1,25 @@
 {% extends "plantilla.html" %}
 {% load static %}
-{% block 'content' %}
+{% block content %}
 <main class="bg-white rounded-3 mt-4 mb-4 pb-3 pt-3 container" onload="GetPaises()">
   <div id="main-header" class="">
-    <div id="title" class="text-center pb-2 mb-2 border border-dark-subtle border-2 border-bottom-0 border-top-0">
-      <h1>- Contáctanos -</h1>
-    </div>
-    <div id="Descripcion" class="border border-dark-subtle border-2 border-bottom-0 border-top-0 container ">
-      <h2 class="fs-5">Formulario de contacto</h2>
-      <p>Hola, para poder ayudarte, te pedimos que completes correctamente todos los campos solicitados en el
-        siguiente formulario. Uno de nuestros ejecutivos de atención al cliente te contactará en un plazo de 24
-        horas hábiles. Recuerda que nuestros horarios de atención son: lunes a domingo desde las 09:00 hasta las
-        18:00 horas, excepto feriados/festivos.</p>
+    <div class=" container  py-2 my-4">
+        <div id="title" class="text-center container">
+            <h1 class="fw-bold"> Contáctanos </h1>
+          </div>
+          <div id="Descripcion" class="container fw-light">
+            <h2 class="fs-5 fw-semibold">Formulario de contacto</h2>
+            <p>Hola, para poder ayudarte, te pedimos que completes correctamente todos los campos solicitados en el
+              siguiente formulario. Uno de nuestros ejecutivos de atención al cliente te contactará en un plazo de 24
+              horas hábiles. Recuerda que nuestros horarios de atención son: lunes a domingo desde las 09:00 hasta las
+              18:00 horas, excepto feriados/festivos.</p>
+          </div>
     </div>
   </div>
   
-  <div id="Main-formularios" class="bg-white">
+  <div id="Main-formularios" class="bg-white container">
     <form id="formContacto">
     <div class="d-flex flex-wrap justify-content-between gap-2">
-     
         <div class="d-flex flex-column gap-3" style="flex: 1 1 48%; min-width: 280px;">
         
             <div class="form-group">
@@ -87,4 +88,4 @@
 <script src="{% static 'js/Validar.js' %}"></script>
 <script src="{% static 'js/Formulario.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/Validar.css' %}">
-{% endblock 'content' %}
+{% endblock content %}

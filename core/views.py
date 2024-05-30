@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from .models import *
 
 def home(request):
-    return render(request, "index.html")
+    productos = Producto.objects.all()
+    return render(request, 'index.html', {'productos':productos})
 
 def form(request):
     return render(request, "formulario.html")
@@ -14,5 +16,4 @@ def login(request):
 
 def detalle(request):
     return render(request, "detalle.html")
-
 
