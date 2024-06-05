@@ -7,7 +7,7 @@
 
 {% block content %}
   <header class="mb-5">
-    <div id="carousel" class="carousel slide container-fluid mt-4 px-0 px-sm-3 px-md-4" data-bs-ride="carousel" data-bs-theme="dark">
+    <div id="carousel" class="carousel slide my-4 container-fluid" data-bs-ride="carousel" data-bs-theme="dark">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <a href=""><img src="{% static 'img-carousel/1.png' %}" class="d-block w-100" alt="Promoción Días Samsung" /></a>
@@ -61,34 +61,38 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for producto in productos %}
-        
-        {% comment %} card {% endcomment %}
-        <div class="col">
-          <div class="card rounded-3">
-            <a href="#" class="text-decoration-none text-black">
-              <div class="card-header bg-white">
-                <div class="d-flex w-100 justify-content-between">
-                  <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
-                  <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
+          <div id="card" class="col pointe">
+            <div class="card rounded-3">
+                <div class="card-header bg-white">
+                  <div class="d-flex w-100 justify-content-between">
+                    <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
+                    <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
+                  </div>
+                  <div class="py-2">{{ producto.descripcion }}</div>
                 </div>
-                <div class="py-2">{{ producto.descripcion }}</div>
-              </div>
-              <div class="card-body border-black">
-                <div class="d-flex justify-content-between">
-                  <div class="text-black fw-light">UID: {{ producto.id }}</div>
+                <div class="card-body border-black">
+                  <div class="d-flex justify-content-between">
+                    <div class="text-black fw-light">UID: {{ producto.id }}</div>
+                  </div>
+                  <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
                 </div>
-                <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
+              <div class="card-footer d-flex bg-white w-100 justify-content-between align-items-center">
+                <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
+                <h6 class="text-black fs-5 fw-semibold">${{ producto.precio|intcomma }}</h6>
               </div>
-            </a>
-            <div class="card-footer d-flex bg-white w-100 justify-content-between align-items-center">
-              <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
-              <h6 class="text-black fs-5 fw-semibold">${{ producto.precio|intcomma }}</h6>
             </div>
-            <a href="{% url 'detalle' %}" class="stretched-link"></a>
+            <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center">
+              <div id="carritobtn" class="d-flex justify-content-center align-items-center">
+                <a href="" class="text-decoration-none bg-black px-3 py-2 text-white text-center rounded-bottom-2">
+                  Añadir al carrito
+                </a>
+              </div>
+              <div id="detallebtn" class="d-flex justify-content-center align-items-center">
+                <a href="{% url 'detalle' %}" class="text-decoration-none bg-black px-3 py-2 text-white text-center rounded-bottom-2">
+                  Ver Detalle</a>
+              </div>
+            </div>
           </div>
-        </div>
-        
-      
         {% endfor %}
       </div>
     </div>

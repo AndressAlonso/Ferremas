@@ -1,6 +1,36 @@
+.carousel-item{
+    user-select: none;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-item {
+        transition: 2s all;
+    }
+}
 #image-card {
     height: 50vh;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+}
+#card:hover{
+    transform: scale(1.01);
+    transition: 0.5s all;
+
+}
+#card #carritodetalle {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#card:hover #carritodetalle {
+    opacity: 1 !important;
+    transition: 0.5s all;
+    pointer-events: auto !important;
+}
+
+#card:hover #carritodetalle {
+    animation-name: bajar;
+    animation-duration: 0.5s;
 }
