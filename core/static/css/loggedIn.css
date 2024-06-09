@@ -1,0 +1,19 @@
+#loginlink {
+    display: none;
+}
+
+#registroLink {
+    display: none;
+}
+
+#logout {
+    display: block !important;
+}
+
+#formLogout {
+    display: block !important;
+}
+
+#contraseñaolvidada{
+    display: block;
+}
