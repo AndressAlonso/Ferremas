@@ -1,2 +1,2 @@
 # DjangoWebDuocUc
-Prueba en Django
+Examen Transversal Duoc Uc Django
