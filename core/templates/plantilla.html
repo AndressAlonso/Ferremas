@@ -79,10 +79,10 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white d-flex gap-2 justify-content-center align-items-center" href="{% url 'carrito' %}" style="cursor: pointer !important;">
+              <a class="nav-link text-white d-flex gap-2 justify-content-center align-items-center" href="{% url 'carro' %}" style="cursor: pointer !important;">
                 <svg class="" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 22" fill="#7A7A7A">
                   <path  fill-rule="evenodd" d="M0.926316 4.21713e-05C0.680642 4.21713e-05 0.44503 0.105399 0.271312 0.292935C0.0975939 0.480471 0 0.734824 0 1.00004C0 1.26526 0.0975939 1.51961 0.271312 1.70715C0.44503 1.89468 0.680642 2.00004 0.926316 2.00004H2.98274L5.41339 12.5C5.61996 13.39 6.35823 14 7.20766 14H17.8325C18.669 14 19.3795 13.4 19.599 12.53L22 3.00004H6.48421L6.94737 5.00003H19.5971L17.8316 12H7.20674L4.77701 1.50004C4.67664 1.06927 4.44527 0.687319 4.11996 0.415355C3.79464 0.143391 3.39419 -0.00285293 2.98274 4.21713e-05H0.926316ZM16.6737 14C15.1499 14 13.8947 15.355 13.8947 17C13.8947 18.645 15.1499 20 16.6737 20C18.1975 20 19.4526 18.645 19.4526 17C19.4526 15.355 18.1975 14 16.6737 14ZM8.33684 14C6.81305 14 5.5579 15.355 5.5579 17C5.5579 18.645 6.81305 20 8.33684 20C9.86063 20 11.1158 18.645 11.1158 17C11.1158 15.355 9.86063 14 8.33684 14ZM8.33684 16C8.85928 16 9.26316 16.436 9.26316 17C9.26316 17.564 8.85928 18 8.33684 18C7.8144 18 7.41053 17.564 7.41053 17C7.41053 16.436 7.8144 16 8.33684 16ZM16.6737 16C17.1961 16 17.6 16.436 17.6 17C17.6 17.564 17.1961 18 16.6737 18C16.1512 18 15.7474 17.564 15.7474 17C15.7474 16.436 16.1512 16 16.6737 16Z" clip-rule="evenodd" fill="#7A7A7A"></path>
-                </svg><span class="text-center" style="cursor: pointer !important;">Carrito</span>
+                </svg><span class="text-center" style="cursor: pointer !important;">Carrito ({{request.session.carrito|length }})</span>
               </a>
             </li>
           </ul>
