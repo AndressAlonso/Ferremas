@@ -5,15 +5,15 @@
   <div class="card">
       <div class="row g-0">
           <div class="col-md-4">
-              <img src="{% static 'Img-carousel/pc2.jpg' %}" alt="Imagen del producto" class="img-thumbnail">
+              <img src="{{producto.imagen}}" alt="Imagen del producto" class="img-thumbnail">
           </div>
           <div class="col-md-8 text-dark">
               <div class="card-body">
-                  <h5 class="card-title">MSI Katana GF66 12UC</h5>
+                  <h5 class="card-title">{{producto.descripcion}}</h5>
                   <p class="card-text">
                       <ul class="text-dark">
-                          <li>Marca: MSI</li>
-                          <li>Modelo: Katana GF66 12UC</li>
+                          <li>Marca: {{producto.id_marca.nombre}}</li>
+                          <li>Modelo: {{producto.descripcion}}</li>
                           <li>Color: Negro</li>
                           <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
                           <li>Tarjeta gráfica: NVIDIA GeForce RTX 3050 (4GB GDDR6)</li>
@@ -36,7 +36,7 @@
                   </select>
                 </div>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-dark me-md-2" type="button">Añadir al carrito</button>
+                    <a href="{% url "addToCar" producto.id %}"class="btn btn-dark me-md-2" type="button">Añadir al carrito</a>
                     <button class="btn btn-dark" type="button">Comprar</button>
                 </div>
               </div>

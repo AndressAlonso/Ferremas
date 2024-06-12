@@ -1,8 +1,13 @@
 {% extends "plantilla.html" %}
 {% load static %}
 {% load humanize %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static "css/carrito.css" %}">
+{% endblock links %}
+{% load static %}
 {% block content %} 
-<main class="container mt-5 bg-white rounded-3 pt-4 pb-4 mb-5">
+<main id="carrito_container" class="container mt-5 bg-white rounded-3 pt-4 pb-4 mb-5">
 
   <h2 class=""><svg class="m-1" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 22 20"
       fill="#7A7A7A">
@@ -25,15 +30,18 @@
         </thead>
         <tbody> 
           {% for producto in request.session.carrito %}
-          <tr>
-            <th scope="row">1</th>
+          <tr id="item_carrito">
+            <th scope="row">{{forloop.counter}}</th>
             <td><img src="{{producto.imagen}}" alt="Producto 1" style="max-width: 50px;"></td>
             <td>{{producto.nombre}}</td>
             <td>${{producto.precio|intcomma}}</td>
             <td>{{producto.cantidad}}</td>
             <td>${{producto.subtotal|intcomma}}</td>
             <td class="border-0 ">
-              <a href="{% url "delToCar" producto.id %}" class="btn btn-outline-danger"><img src="https://img.icons8.com/material-rounded/24/full-trash.png" alt="full-trash"/></a>
+              <a id="btnDelToCar" href="{% url "delToCar" producto.id %}" class="btn btn-outline-danger"><img src="https://img.icons8.com/material-rounded/24/full-trash.png" alt="full-trash"/></a>
+            </td>
+            <td>
+              <a id="btnDelToCar" href="{% url "addToCar" producto.id %}" class="btn btn-outline-danger" ><span class="fw-bolder text-center" style="height:24px !important; width:24px !important;">+</span></a>
             </td>
           </tr>
           {% endfor %}
@@ -41,7 +49,7 @@
       </table>
     </div>
     <div class="d-grid gap-2 col-6 mt-3">
-      <button class="btn border border-black bg-black text-white border-2 border-end-0 border-start-0 rounded-0" type="button">Finalizar Compra</button>
+      <button  class="btn border border-black bg-black text-white border-2 border-end-0 border-start-0 rounded-0" type="button">Finalizar Compra</button>
     </div>
     {% else %}
     <h4>Tu carrito esta vacio</h4>
