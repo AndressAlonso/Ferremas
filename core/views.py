@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth.views import logout_then_login
+from django.urls import reverse
 
 def home(request):
     productos = Producto.objects.all()
@@ -45,6 +46,5 @@ def addToCar(request,id):
     else:
           carrito.append({"id":id,"nombre":producto.descripcion,"imagen": producto.imagen, "precio": producto.precio ,"cantidad":1, "subtotal": producto.precio})
 
-    print(carrito)
     request.session["carrito"] = carrito
-    return redirect(to=home)
+    return redirect(reverse('home'))

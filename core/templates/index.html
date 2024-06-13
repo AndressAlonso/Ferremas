@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-  <header class="mb-5">
+  <header class="mb-5" onload="window.scrollTo(0, {{ scroll_position }});">
     <div id="carousel" class="carousel slide my-4 container-fluid" data-bs-ride="carousel" data-bs-theme="dark">
       <div class="carousel-inner">
         <div class="carousel-item active">
@@ -68,7 +68,7 @@
                     <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
                     <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
                   </div>
-                  <div class="py-2">{{ producto.descripcion }}</div>
+                  <div class="py-2" style="height: 64px !important;">{{ producto.descripcion }}</div>
                 </div>
                 <div class="card-body border-black">
                   <div class="d-flex justify-content-between">
@@ -83,9 +83,10 @@
             </div>
             <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center">
               <div id="carritobtn" class="d-flex justify-content-center align-items-center">
-                <a href="{% url "addToCar" producto.id %}" class="text-decoration-none bg-black px-3 py-2 text-white text-center rounded-bottom-2">
+                <a href="{% url 'addToCar' producto.id %}?scroll_position={{ scroll_position }}" class="text-decoration-none bg-black px-3 py-2 text-white text-center rounded-bottom-2">
                   Añadir al carrito
-                </a>
+              </a>
+              
               </div>
               <div id="detallebtn" class="d-flex justify-content-center align-items-center">
                 <a href="{% url 'detalle' %}" class="text-decoration-none bg-black px-3 py-2 text-white text-center rounded-bottom-2">
