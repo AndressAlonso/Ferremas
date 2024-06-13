@@ -5,32 +5,22 @@
 }
 
 
-#formLogout{
-display: none;
-}
-#logout{
-display: none;
-}
-
-#contraseñaolvidada{
+#formLogout {
     display: none;
 }
 
+#logout {
+    display: none;
+}
 
-html {
-    min-height: 100%;
-    position: relative;
-  }
-  body {
-    margin: 0;
-    margin-bottom: 40px;
-  }
-  #footer {
-    background-color: black;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    color: white;
-    
-  }
-
+#contraseñaolvidada {
+    display: none;
+}
+@media (min-width: 768px) {
+    #urlhome {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+}

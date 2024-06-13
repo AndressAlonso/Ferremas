@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es" class="d-flex">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +13,7 @@
     {% block links %}
 
     {% endblock %}
+
     {% if user.is_authenticated %}
       <link rel="stylesheet" href="{% static 'css/loggedin.css' %}" />
 
@@ -25,8 +26,7 @@
 
     {% endif %}
   </head>
-
-  <body class="bg-light flex-grow-1 d-flex flex-column">
+  <body class="bg-light d-flex flex-column">
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -66,10 +66,10 @@
     </div>
     <nav class="navbar bg-black border-bottom border-body navbar-expand-lg pb-4 pt-4" data-bs-theme="dark">
       <div class="container-fluid text-white">
-        <a class="navbar-brand mx-auto text-white position-absolute start-50 translate-middle-x" href="{% url 'home' %}">TechTreasure</a>
+        <a class="navbar-brand mx-auto text-white" id="urlhome" href="{% url 'home' %}">TechTreasure</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" id="btnNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav">
             <li class="nav-item" data-username="{{ user.username }}" id="cuentaNavItem">
               <a id="cuenta" class="nav-link text-decoration-none text-white d-flex gap-2 justify-content-center" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-current="page" style="cursor: pointer !important;">
                 <svg width="23" height="23" viewBox="0 0 20 20" focusable="false" aria-hidden="true" role="presentation">

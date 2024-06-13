@@ -1,51 +1,68 @@
 {% extends 'plantilla.html' %}
 {% load static %}
+{% load humanize %}
+{% block links %}
+<link rel="stylesheet" href=" {% static 'css/detalle.css' %} ">
+{% endblock links %}
 {% block content %}
-<main class="container my-5">
-  <div class="card">
-      <div class="row g-0">
-          <div class="col-md-4">
-              <img src="{% static 'Img-carousel/pc2.jpg' %}" alt="Imagen del producto" class="img-thumbnail">
-          </div>
-          <div class="col-md-8 text-dark">
-              <div class="card-body">
-                  <h5 class="card-title">MSI Katana GF66 12UC</h5>
-                  <p class="card-text">
-                      <ul class="text-dark">
-                          <li>Marca: MSI</li>
-                          <li>Modelo: Katana GF66 12UC</li>
-                          <li>Color: Negro</li>
-                          <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
-                          <li>Tarjeta gráfica: NVIDIA GeForce RTX 3050 (4GB GDDR6)</li>
-                          <li>Pantalla: 15.6" IPS-Level FHD, 144Hz, Tr+Tf 25ms, 45% NTSC, ANTI-GLARE / 1920 x 1080</li>
-                          <li>Sistema Operativo: Windows 11 Home</li>
-                          <li>Memoria RAM: 8GB DDR4 SDRAM 1600(3200)MHz (Máx. 64GB de Memoria RAM) 2 Slot</li>
-                          <li>Almacenamiento: 512GB PCIe GEN4x4 w/o DRAM NVMe</li>
-                          <li>Dispositivos Comunicaciones: Wifi 6 / LAN: REALTEK/RTL8111H-VB-CG/ Bluetooth:INTEL/AX201.NGWG.NVW</li>
-                          <li>Puertos: USB x 2 (3.2 Gen 1)/ 1 x HDMI (4K @60Hz)/ 1 x Ethernet (RJ-45)/ 1 x combo audio jack (3.5mm)</li>
-                          <li>Batería: 3 Celdas 53.5WH</li>
-                          <li>Dimensión: 359 x 259 x 24.9 mm</li>
-                          <li>Peso: 2.25 Kg</li>
-                      </ul>
-                  </p>
-                <div>
-                  <div class="d-flex gap-1">
-                  <h3 class="text-success" id="precioClp">15000</h3><h3 class="text-success" id="divisa">divisa</h3></div>
-                  <select name="indicador" id="ssindicador">
-                    <option value="-1">Eliga Divisa</option>
-                  </select>
-                </div>
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-dark me-md-2" type="button">Añadir al carrito</button>
-                    <button class="btn btn-dark" type="button">Comprar</button>
-                </div>
-              </div>
+<main>
+  <div id="containerDetalles" class="d-flex flex-wrap-reverse">
+    <div id="left" class="container d-flex flex-column my-5">
+      <div class="fw-bold">>{{producto.descripcion}}< </div>
+      <div id="listdetallesNimage" class="d-flex flex-wrap">
+      <div class="w-100">
+      <ul class="text-dark d-flex gap-2 flex-column container justify-content-center py-3 w-100" id="detallesUl">
+        <li>Marca: {{producto.id_marca.nombre}}</li>
+        <li>Modelo: {{producto.descripcion}}</li>
+        <li>Color: Negro</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+        <li>Procesador: Intel® Core™ i5-12500H, hasta 4,50GHz (18M Caché)</li>
+      </ul>
+    </div>
+    <div class="d-flex border border-5 bg-white justify-content-center align-items-center my-3" id="image_detalle">
+      <img src="{{producto.imagen}}" alt="" class="img-thumbnail w-75 my-3 border-0">
+    </div>
+    
+    </div>
+    <div class="d-flex gap-2 flex-column">
+      <div id="btns&precio">
+        <div>
+          <h3>${{producto.precio|intcomma}}</h3>
+        </div>
+        <a href="{% url "addToCar" producto.id %}" class="btn btn-dark" type="button"><svg class="" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 22" fill="#7A7A7A">
+          <path  fill-rule="evenodd" d="M0.926316 4.21713e-05C0.680642 4.21713e-05 0.44503 0.105399 0.271312 0.292935C0.0975939 0.480471 0 0.734824 0 1.00004C0 1.26526 0.0975939 1.51961 0.271312 1.70715C0.44503 1.89468 0.680642 2.00004 0.926316 2.00004H2.98274L5.41339 12.5C5.61996 13.39 6.35823 14 7.20766 14H17.8325C18.669 14 19.3795 13.4 19.599 12.53L22 3.00004H6.48421L6.94737 5.00003H19.5971L17.8316 12H7.20674L4.77701 1.50004C4.67664 1.06927 4.44527 0.687319 4.11996 0.415355C3.79464 0.143391 3.39419 -0.00285293 2.98274 4.21713e-05H0.926316ZM16.6737 14C15.1499 14 13.8947 15.355 13.8947 17C13.8947 18.645 15.1499 20 16.6737 20C18.1975 20 19.4526 18.645 19.4526 17C19.4526 15.355 18.1975 14 16.6737 14ZM8.33684 14C6.81305 14 5.5579 15.355 5.5579 17C5.5579 18.645 6.81305 20 8.33684 20C9.86063 20 11.1158 18.645 11.1158 17C11.1158 15.355 9.86063 14 8.33684 14ZM8.33684 16C8.85928 16 9.26316 16.436 9.26316 17C9.26316 17.564 8.85928 18 8.33684 18C7.8144 18 7.41053 17.564 7.41053 17C7.41053 16.436 7.8144 16 8.33684 16ZM16.6737 16C17.1961 16 17.6 16.436 17.6 17C17.6 17.564 17.1961 18 16.6737 18C16.1512 18 15.7474 17.564 15.7474 17C15.7474 16.436 16.1512 16 16.6737 16Z" clip-rule="evenodd" fill="#7A7A7A"></path>
+        </svg>Añadir al
+          carrito</a>
+        <button class="btn btn-dark" type="button">Comprar</button>
+       
+      </div>
+        <div id="convertidor" class="w-100 fs-5">
+          <div><span>Convertir de CLP a</span>
+            <select id="ssindicador" class="border-0">
+              <option id="btndivisa" class="btn btn-dark">dolar</option>
+              <option id="btndivisa" class="btn btn-dark">euro</option>
+              <option id="btndivisa" class="btn btn-dark">bitcoin</option>
+            </select>
+            <span id="precio"></span>
+              <span class="text-success" id="precioClp" precio={{producto.precio}}>$0000</span>
+              <span class="text-success" id="divisa">EUR</span>
           </div>
       </div>
+    </div>
+    </div>
+
   </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/mindicador.js' %}"></script>
 
 {% endblock content %}
- 

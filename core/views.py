@@ -16,10 +16,12 @@ def carro(request):
 def registro(request):
     return render(request, "registro.html")
 
-def detalle(request):
-    return render(request, "detalle.html")
+def detalle(request,id):
+    producto = Producto.objects.get(id=id)
+    return render(request, "detalle.html", {"producto": producto})
 
 def logout(request):
+   
     return logout_then_login(request, 'login')
 
 def delToCar(request,id):
@@ -47,4 +49,4 @@ def addToCar(request,id):
           carrito.append({"id":id,"nombre":producto.descripcion,"imagen": producto.imagen, "precio": producto.precio ,"cantidad":1, "subtotal": producto.precio})
 
     request.session["carrito"] = carrito
-    return redirect(reverse('home'))
+    return redirect(to=carro)

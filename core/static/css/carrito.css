@@ -1,0 +1,20 @@
+@keyframes carrito {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+#carrito_container{
+   animation: carrito 0.5s;
+   height: 100vh;
+}
+
+
+#btnDelToCar:hover{
+    transform: scale(01.1);
+    transition: 0.3s all;
+}
+
