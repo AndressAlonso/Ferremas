@@ -14,11 +14,16 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+@media (min-width: 1024px) {
+    #card{
+        width: 23%;
+    }
+    }
 #card:hover{
     transform: scale(1.01);
     transition: 0.5s all;
-
 }
+
 #card #carritodetalle {
     opacity: 0 !important;
     pointer-events: none !important;

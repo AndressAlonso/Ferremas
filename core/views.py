@@ -4,8 +4,9 @@ from django.contrib.auth.views import logout_then_login
 from django.urls import reverse
 
 def home(request):
-    productos = Producto.objects.all()
-    return render(request, 'index.html', {'productos':productos})
+    notes = Producto.objects.filter(id_tipo_producto=1)
+    smartphones = Producto.objects.filter(id_tipo_producto=2)
+    return render(request, 'index.html', {'notes':notes, 'fonos':smartphones})
 
 def form(request):
     return render(request, "formulario.html")

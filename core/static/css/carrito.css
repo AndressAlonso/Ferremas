@@ -9,7 +9,7 @@
 
 #carrito_container{
    animation: carrito 0.5s;
-   height: 100vh;
+   min-height: 100vh;
 }
 
 

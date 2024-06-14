@@ -1,9 +1,8 @@
 @media (prefers-reduced-motion: reduce) {
     .fade {
-        transition: 0.5s;
+        transition: 0.2s;
     }
 }
-
 
 #formLogout {
     display: none;
@@ -23,4 +22,16 @@
         transform: translateX(-50%);
       }
       
+}
+
+@keyframes aparecer {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+main{
+animation: aparecer 0.2s;
 }
