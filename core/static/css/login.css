@@ -3,7 +3,7 @@
     font-size: 20px;
     border: 5px solid black;
     padding: 2rem 1rem;
-    min-height: 3em;
+    min-height: 2em;
     width: 60%;
     resize: both;
     background: linear-gradient(to top, rgba(#0d1b1b, 0.3), rgba(#130a0a, 0.3), rgba(#fce2ce, 0.3), rgba(#ffc1f3, 0.3));
@@ -20,8 +20,6 @@ label {
     width: 100%;
     text-align: start;
     font-weight: 500;
-
-    
 }
 input{
     box-shadow: none;
@@ -41,6 +39,26 @@ input:focus{
     font-style: italic;
     font-size: 3vh;
     width: 100%;
+    color: red;
+    text-align: start;
+    font-weight: 500;
+}
+
+.helptext{
+    list-style-type: none;
+    width: 100%;
+    text-transform: capitalize;
+    padding: 0px;
+    font-weight: light;
+    font-style: italic;
+    font-size: 3vh;
+    width: 100%;
+    text-align: start;
+}
+
+
+.helptext ul {
+    list-style-type: "> ";
 }
 #container_form{
     min-height:100vh;

@@ -6,17 +6,17 @@
 {% endblock %}
 
 {% block content %}
-  <main>
+  <header>
     <div id="carousel" class="carousel slide my-4 container-fluid" data-bs-ride="carousel" data-bs-theme="dark">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <a href=""><img src="{% static 'img-carousel/1.png' %}" class="d-block w-100" alt="Promoción Días Samsung"></a>
+          <a href=""><img src="{% static 'img-carousel/1.png' %}" class="d-block w-100" alt="Promoción Días Samsung" /></a>
         </div>
         <div class="carousel-item">
-          <a href=""><img src="{% static 'img-carousel/2.png' %}" class="d-block w-100" alt="Producto 3" ></a>
+          <a href=""><img src="{% static 'img-carousel/2.png' %}" class="d-block w-100" alt="Producto 3" /></a>
         </div>
         <div class="carousel-item">
-          <a href=""><img src="{% static 'img-carousel/3.png' %}" class="d-block w-100" alt="Producto 4" ></a>
+          <a href=""><img src="{% static 'img-carousel/3.png' %}" class="d-block w-100" alt="Producto 4" /></a>
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
@@ -62,10 +62,11 @@
       <div id="Recomendaciones-title" class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
         <span class="fw-bold">Notebooks</span>
       </div>
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div id="cards_container" class="row row-cols-1 d-flex row-cols-md-2 row-cols-lg-3 g-4">
         {% for producto in notes %}
-          <div id="card" class="col">
-            <div class="card rounded-3">
+          {% if forloop.counter <=   4 %}
+            <div id="card" class="col">
+              <div id="title_card1" class="card rounded-3">
                 <div class="card-header bg-white">
                   <div class="d-flex w-100 justify-content-between">
                     <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
@@ -79,58 +80,54 @@
                   </div>
                   <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
                 </div>
-              <div class="card-footer d-flex bg-white w-100 justify-content-between align-items-center">
-                <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
-                <h6 class="text-black fs-5 fw-semibold">${{ producto.precio|intcomma }}</h6>
+                <div class="card-footer d-flex bg-white w-100 px-0 justify-content-around align-items-center">
+                  <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
+                  <h6 class="text-black fw-semibold">${{ producto.precio|intcomma }}</h6>
+                </div>
+              </div>
+              <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center">
+                <div id="carritobtn1" class="d-flex justify-content-center align-items-center">
+                  <a href="{% url 'addToCar' producto.id 'home' 'title_card1' %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">+ Carrito</a>
+                </div>
+                <div id="detallebtn" class="d-flex justify-content-center align-items-center">
+                  <a href="{% url 'detalle' producto.id %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">Ver Detalle</a>
+                </div>
               </div>
             </div>
-            <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center">
-              <div id="carritobtn" class="d-flex justify-content-center align-items-center">
-                <a href="{% url 'addToCar' producto.id %}?scroll_position={{ scroll_position }}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">
-                  + Carrito
-              </a>
-              
-              </div>
-              <div id="detallebtn" class="d-flex justify-content-center align-items-center">
-                <a href="{% url 'detalle' producto.id %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">
-                  Ver Detalle</a>
-              </div>
-            </div>
-          </div>
+          {% endif %}
         {% endfor %}
       </div>
       <div id="Recomendaciones-title" class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
         <span class="fw-bold">Smartphones</span>
       </div>
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div id="cards_container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for producto in fonos %}
           <div id="card" class="col">
-            <div class="card rounded-3">
-                <div class="card-header bg-white">
-                  <div class="d-flex w-100 justify-content-between">
-                    <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
-                    <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
-                  </div>
-                  <div style="height: 70px !important;">{{ producto.descripcion }}</div>
+            <div id="title_card2" class="card rounded-3">
+              <div class="card-header bg-white">
+                <div class="d-flex w-100 justify-content-between">
+                  <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
+                  <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
                 </div>
-                <div class="card-body border-black">
-                  <div class="d-flex justify-content-between">
-                    <div class="text-black fw-light">UID: {{ producto.id }}</div>
-                  </div>
-                  <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
+                <div style="height: 70px !important;">{{ producto.descripcion }}</div>
+              </div>
+              <div class="card-body border-black">
+                <div class="d-flex justify-content-between">
+                  <div class="text-black fw-light">UID: {{ producto.id }}</div>
                 </div>
-              <div class="card-footer d-flex bg-white w-100 justify-content-between align-items-center">
+                <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
+              </div>
+              <div class="card-footer d-flex bg-white w-100 justify-content-around px-0 align-items-center">
                 <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
-                <h6 class="text-black fs-5 fw-semibold">${{ producto.precio|intcomma }}</h6>
+                <h6 class="text-black fw-semibold">${{ producto.precio|intcomma }}</h6>
               </div>
             </div>
             <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center gap-1">
-              <div id="carritobtn" class="d-flex justify-content-center align-items-center">
-                <a href="{% url 'addToCar' producto.id %}" class="text-decoration-none bg-black text-white text-center rounded-bottom-2 px-2 py-1">+ Carrito</a>
+              <div id="carritobtn2" class="d-flex justify-content-center align-items-center">
+                <a href="{% url 'addToCar' producto.id 'home' 'title_card2'  %}" class="text-decoration-none bg-black text-white text-center rounded-bottom-2 px-2 py-1">+ Carrito</a>
               </div>
               <div id="detallebtn" class="d-flex justify-content-center align-items-center">
-                <a href="{% url 'detalle' producto.id %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">
-                  Ver Detalle</a>
+                <a href="{% url 'detalle' producto.id %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">Ver Detalle</a>
               </div>
             </div>
           </div>

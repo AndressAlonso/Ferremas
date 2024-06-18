@@ -1,0 +1,116 @@
+{% comment %} 
+
+-----> NO USAR ES PARA GUARDAR EL CODIGO ORIGINAL DEL REGISTRO <-------------
+
+{% endcomment %}
+
+
+{% extends "plantilla.html" %}
+{% load static %}
+{% block links %} <link rel="stylesheet" href="{% static 'css/registro.css' %}"> {% endblock links %}
+{% block content %}
+
+<main id="Main_container" class="container pt-4 rounded-3 bg-white" >
+  <div id="registro" class="bg-white d-flex container-md flex-column row-gap-3">
+    <div id="titulo" class="d-flex border-black border-bottom border-success-subtle pb-3 pt-3">
+      <h1 class="fw-bold">
+        <svg width="70" height="70" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="60" height="60" fill="#" />
+          <path
+            d="M38.7669 40.9992C38.1598 40.9992 37.663 40.5042 37.663 39.8992V37.6992C37.663 35.8842 36.1727 34.3992 34.3512 34.3992H25.5197C23.6982 34.3992 22.2079 35.8842 22.2079 37.6992V39.8992C22.2079 40.5042 21.7111 40.9992 21.1039 40.9992C20.4968 40.9992 20 40.5042 20 39.8992V37.6992C20 34.6632 22.4728 32.1992 25.5197 32.1992H34.3512C37.3981 32.1992 39.8709 34.6632 39.8709 37.6992V39.8992C39.8709 40.5042 39.3741 40.9992 38.7669 40.9992Z"
+            fill="black"> </path>
+          <path
+            d="M29.5197 29.9999C26.4728 29.9999 24 27.536 24 24.5C24 21.464 26.4728 19 29.5197 19C32.5666 19 35.0394 21.464 35.0394 24.5C35.0394 27.536 32.5666 29.9999 29.5197 29.9999ZM29.5197 21.2C27.6982 21.2 26.2079 22.685 26.2079 24.5C26.2079 26.315 27.6982 27.8 29.5197 27.8C31.3412 27.8 32.8315 26.315 32.8315 24.5C32.8315 22.685 31.3412 21.2 29.5197 21.2Z"
+            fill="black"> </path>
+        </svg>
+        <span id="registrotitle" class="fs-4">Registra tu cuenta</span>
+        </h1>
+    </div>
+    <div id="registro-datosPers" class="border-black border-bottom border-success-subtle pb-4">
+      <div id="datosPers-titulo">
+        <h4 class="fw-semibold">Ingreso de datos</h4>
+        <p class="fw-light">Registro nos permitirá conocerte y no tener que solicitarte los datos nuevamente cuando quieras comprar en TechTreasure. Los campos marcados (*) deben ser llenados obligatoriamente.</p>
+      </div>
+      <div id="forms1" class="d-flex flex-column gap-4">
+        <div id="form1-left" class="flex-fill gap-4 d-flex flex-column">
+          <div id="rut">
+            <label class="form-label" for="rut">Usuario*</label>
+            <input type="text" id="f.usuario" class="form-control w-100 border-black border border-1 border-opacity-25" placeholder="12323432-5">
+          </div>
+          <div id="telefonoPrincipal" class="form-group">
+            <label class="form-label" for="telefonPrincipal" >Teléfono*</label>
+            <input type="text" id="f.telefonPrincipal" class="form-control w-100 border-black border border-1 border-opacity-25" placeholder="Tu numero de telefono">
+          </div>
+          <div id="email">
+            <label class="form-label" for="email">Email*</label>
+            <input type="email" id="f.email" class="form-control w-100 border-black border border-1 border-opacity-25 " placeholder="name@example.cl">
+          </div>
+        </div>
+        <div class="col-md-6 d-flex flex-column gap-4 " id="registro-contraseña">
+          <div id="form3" class="d-flex gap-4 flex-column">
+            <div id="contraseña">
+              <label class="form-label" for="f.contraseña">Contraseña</label>
+              <input class="form-control border-black border border-1 border-opacity-25" type="password" id="f.contraseña">
+            </div>
+            <div id="confirmar.contraseña">
+              <label class="form-label" for="f.confirmar.contraseña">Confirmar Contraseña</label>
+              <input class="form-control border-black border border-1 border-opacity-25" type="password" id="f.confirmar.contraseña"> <p class="fw-light">Su contraseña debe contener mínimo 7 dígitos, al menos una letra Mayúscula, números y símbolos tales
+              como @%!*?&</p>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+    <div id="direccion-contraseña-cont" class="container pb-3">
+      <div id="direccion-titulo" class="">
+        <h3 class="fw-bold">Crea tu nueva dirección</h3>
+      </div>
+      <div id="forms2" class="d-flex gap-4 flex-column">
+        <!-- Registro Dirección -->
+        <div class="col-md-6 d-flex flex-column gap-4" id="registro-direccion">
+          <div id="formss" class="d-flex gap-4 flex-column">
+            <div id="nombredireccion">
+              <label class="form-label" for="f.nombredireccion">Nombre dirección</label>
+              <input class="form-control border-black border border-1 border-opacity-25" id="f.nombredireccion" type="text" placeholder="Casa / Trabajo">
+            </div>
+            <div id="direccion">
+              <label class="form-label" for="f.direccion">Dirección</label>
+              <input class="form-control border-black border border-1 border-opacity-25" id="f.direccion" type="text" placeholder="Serrano">
+            </div>
+            <div id="numerodireccion">
+              <label class="form-label" for="f.numerodireccion">Numero dirección</label>
+              <input class="form-control border-black border border-1 border-opacity-25" id="f.numerodireccion" type="text" placeholder="1115">
+            </div>
+            <div id="piso/oficina/apto/depto">
+              <label class="form-label" for="f.piso/oficina/apto/depto">Descripción</label>
+              <input id="f.piso/oficina/apto/depto" type="text" class="form-control border-black border border-1 border-opacity-25" placeholder="Piso/oficina/apto/depto">
+            </div>
+          </div>
+        </div>
+    
+        <!-- Registro Contraseña -->
+        <div id="form1-right" class="col-md-6 d-flex flex-column gap-4 ">
+          <div id="comuna">
+            <label class="form-label" for="f.comuna">Comuna</label>
+            <input class="form-control border-black border border-1 border-opacity-25" id="f.comuna" type="text" placeholder="Melipilla">
+          </div>
+          <div id="region">
+            <label class="form-label" for="f.region">Región</label>
+            <input class="form-control border-black border border-1 border-opacity-25" id="f.region" type="text" placeholder="Metropolitana">
+          </div>
+          <div id="ciudad">
+            <label class="form-label" for="f.ciudad">Ciudad</label>
+            <input class="form-control border-black border border-1 border-opacity-25" id="f.ciudad" type="text" placeholder="Melipilla">
+          </div>
+        </div>
+      </div>
+      <div id="boton-registrar" class="d-flex justify-content-center align-items-center mt-4">
+        <button class="btn btn-dark">Registrarse</button>
+      </div>
+    </div>
+    
+</main>
+
+{% endblock content %}

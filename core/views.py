@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth.views import logout_then_login
+from .forms import *
 from django.urls import reverse
 
 def home(request):
@@ -36,9 +37,9 @@ def delToCar(request,id):
             else:
                 carrito.remove(item)
     request.session["carrito"] = carrito
-    return redirect(to=carro)
+    return redirect(reverse(carro)+ '#titleCarrito')
 
-def addToCar(request,id):
+def addToCar(request,id,view,btn):
     producto = Producto.objects.get(id=id)  
     carrito = request.session.get("carrito", [])
     for item in carrito:
@@ -50,4 +51,15 @@ def addToCar(request,id):
           carrito.append({"id":id,"nombre":producto.descripcion,"imagen": producto.imagen, "precio": producto.precio ,"cantidad":1, "subtotal": producto.precio})
 
     request.session["carrito"] = carrito
-    return redirect(to=carro)
+    
+    return redirect(reverse(view) +'#' +btn)
+
+def registro(request):
+    if request.method == "POST":
+        registro = Registro(request.POST)
+        if registro.is_valid():
+            registro.save()
+            return redirect(to="login")
+    else:
+        registro = Registro()
+    return render(request,'registro.html', {'form': registro})

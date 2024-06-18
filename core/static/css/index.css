@@ -1,4 +1,4 @@
-.carousel-item{
+.carousel-item {
     user-select: none;
     pointer-events: none;
 }
@@ -8,19 +8,44 @@
         transition: 2s all;
     }
 }
+
 #image-card {
     height: 50vh;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 }
+
+#cards_container {
+    display: flex;
+    justify-content: center;
+}
+
 @media (min-width: 1024px) {
-    #card{
-        width: 23%;
+    #card {
+        flex-grow: 1;
+        max-width: 23%;
+
     }
-    }
-#card:hover{
+}
+
+.card {
+    border-radius: 47px 0px 14px 16px;
+    -moz-border-radius: 47px 0px 14px 16px;
+    -webkit-border-radius: 47px 0px 14px 16px;
+    
+}
+
+.card:hover {
+    -webkit-box-shadow: 0px 5px 27px -5px rgba(0, 0, 0, 0.64);
+    -moz-box-shadow: 0px 5px 27px -5px rgba(0, 0, 0, 0.64);
+    box-shadow: 0px 5px 27px -5px rgba(0, 0, 0, 0.64);
+
+}
+
+#card:hover {
     transform: scale(1.01);
+
     transition: 0.5s all;
 }
 

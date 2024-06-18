@@ -8,9 +8,9 @@ urlpatterns = [
     path('form', form, name="form"),
     path('carro', carro, name="carro"),
     path('registro', registro, name="registro"),
-    path('detalle/<id>', detalle, name="detalle"),
+    path('detalle/<int:id>', detalle, name="detalle"),
     path('logout', logout, name="logout"),
     path('login', LoginView.as_view(template_name="login.html"), name="login"),
-    path('addToCar/<id>',addToCar,name="addToCar"),
-    path('delToCar/<id>',delToCar,name="delToCar")
+    path('addToCar/<int:id>/<str:view>/<str:btn>/',addToCar,name="addToCar"),
+    path('delToCar/<int:id>',delToCar,name="delToCar")
 ]
