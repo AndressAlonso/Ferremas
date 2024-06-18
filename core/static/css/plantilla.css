@@ -15,14 +15,6 @@
 #contraseñaolvidada {
     display: none;
 }
-@media (min-width: 768px) {
-    #urlhome {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      
-}
 
 @keyframes aparecer {
     0%{
@@ -34,4 +26,7 @@
 }
 main{
 animation: aparecer 0.2s;
+}
+nav a {
+    height: 30px;
 }

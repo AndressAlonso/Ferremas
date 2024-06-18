@@ -4,12 +4,14 @@ input {
 
 .correct:focus {
     border: 1.5px #00e00ff3 solid !important;
-    box-shadow: 0px 0px 1px 1px #00e00ff3 !important;
+    box-shadow: 3px 3px #00e00ff3 !important;
+    transition: 0.5s all;
 }
 
 .incorrect:focus {
     border: 1.5px #fc2702f3 solid !important;
-    box-shadow: 0px 0px 1px 1px #fc2702f3 !important;
+    box-shadow: 3px 3px #fc2702f3 !important;
+    transition: 0.5s all;
 }
 
 #SSTelPaises{

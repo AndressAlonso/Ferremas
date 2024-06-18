@@ -34,8 +34,8 @@ def delToCar(request,id):
                 item["cantidad"] -= 1
                 item["subtotal"] = item["cantidad"] * item["precio"]
                 break
-            else:
-                carrito.remove(item)
+    else:   
+        carrito.remove(item)
     request.session["carrito"] = carrito
     return redirect(reverse(carro)+ '#titleCarrito')
 

@@ -35,7 +35,7 @@
         <tr id="item_carrito" class="flex-grow-1">
           <th scope="row">{{forloop.counter}}</th>
           <td><img src="{{producto.imagen}}" alt="Producto 1" style="max-width: 50px;"></td>
-          <td><a href="{% url 'detalle' producto.id %}" id="detalle" class="text-body-secondary text-decoration-none fw-bold">{{producto.nombre}}</a></td>
+          <td id="detalle"><a href="{% url 'detalle' producto.id %}"   class="text-body-secondary text-decoration-none fw-bold">{{producto.nombre}}</a></td>
           <td>${{producto.precio|intcomma}}</td>
           <td>{{producto.cantidad}}</td>
           <td>${{producto.subtotal|intcomma}}</td>

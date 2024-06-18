@@ -5,10 +5,14 @@
 
 @media (prefers-reduced-motion: reduce) {
     .carousel-item {
-        transition: 2s all;
+        transition: 1s all;
     }
 }
 
+.carousel-item>a>img{
+    max-height: 560.807px;
+
+}
 #image-card {
     height: 50vh;
     background-size: contain;
