@@ -4,6 +4,25 @@ from django.contrib.auth.views import logout_then_login
 from .forms import *
 from django.urls import reverse
 
+
+def comprar(request):
+    carrito = request.session.get("carrito", [])
+    total = 0
+    for item in carrito:
+        total += item['subtotal']
+    venta = Venta()
+    venta.cliente = request.user
+    venta.total = total
+    venta.save()
+    for item in carrito:
+        detalle = DetalleVenta()
+        detalle.producto = Producto.objects.get(id = item['id'])
+        detalle.precio = item['precio']
+        detalle.cantidad = item['cantidad']
+        detalle.venta = venta
+        detalle.save()
+    return redirect(reverse(carro)+ '#titleCarrito')
+
 def home(request):
     notes = Producto.objects.filter(id_tipo_producto=1)
     smartphones = Producto.objects.filter(id_tipo_producto=2)

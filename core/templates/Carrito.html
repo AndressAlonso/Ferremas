@@ -53,8 +53,8 @@
     </table>
   </div>
   <div class="d-grid gap-2 col-6 mt-3 mb-3">
-    <button class="btn border border-black bg-black text-white border-2 border-end-0 border-start-0 rounded-0"
-      type="button">Finalizar Compra</button>
+    <a href="{% url "comprar" %}" class="btn border border-black bg-black text-white border-2 border-end-0 border-start-0 rounded-0"
+      type="button">Finalizar Compra</a>
   </div>
   {% else %}
   <h4>Tu carrito esta vacio</h4>
