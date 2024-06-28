@@ -24,7 +24,7 @@
 }
 
 .cerrado{
-    display: none;
+    display: none !important;
 }
 .abierto{
     animation-name: carrito;

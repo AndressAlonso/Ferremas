@@ -24,31 +24,32 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Cuenta</h1>
+            <span class="modal-title fw-semibold" id="exampleModalLabel">Cuenta</span>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body border-bottom-0 m-auto">
-            <div id="rut-login" class="text-center">
+            <div id="rut-login" class="d-flex flex-column gap-2 fw-bolder">
               {% if user.is_authenticated %}
-                <span>Hola {{ user.username }} !</span>
-
+                <span>Nombre: {{ user.first_name }} {{user.last_name}} </span>
+                <span>Email: {{user.email}}</span>
+                <span>Usuario: {{user.username}}</span>
                 <link rel="stylesheet" href="{% static 'css/logout.css' %}" />
               {% else %}
                 <span>Hola!</span>
               {% endif %}
             </div>
-            <div class="modal-footer text-center d-flex text-black border-top-0">
+            <div class="modal-footer text-center d-flex text-black border-dark-subtle border-2 m-2">
               <a href="{% url 'registro' %}" class="w-100 link-body-emphasis text-decoration-none" id="registroLink">¿No tienes cuenta? Regístrate</a>
               <a href="{% url 'login' %}" class="link-body-emphasis w-100 text-decoration-none" id="loginlink">¿Ya tienes una cuenta? Inicia Sesion!</a>
               <form action="{% url 'logout' %}" id="formLogout" method="post" class="w-100 text-decoration-none">
                 {% csrf_token %}
-                <button type="submit" class="text-black w-100 border-0 bg-transparent" id="logout">
-                  Cerrar Sesion<svg width="20" height="20" version="1.1" viewBox="0 0 20 20" x="0px" y="0px">
+                <button type="submit" class="w-100 border-0 py-2 my-auto btn btn-light" id="logout">
+                  <svg width="20" height="20" version="1.1" viewBox="0 0 20 20" x="0px" y="0px">
                     <g>
                       <path d="M16 18h-4a2 2 0 01-2-2v-2h2v2h4V4h-4v2h-2V4a2 2 0 012-2h4a2 2 0 012 2v12a2 2 0 01-2 2z"></path>
                       <path d="M7 5l1.5 1.5L6 9h8v2H6l2.5 2.5L7 15l-5-5 5-5z"></path>
                     </g>
-                  </svg>
+                  </svg><span>Cerrar Sesion</span>
                 </button>
               </form>
               <a href="" class="link-body-emphasis w-100 text-decoration-none" id="contraseñaolvidada">¿Olvidaste tu contraseña?</a>

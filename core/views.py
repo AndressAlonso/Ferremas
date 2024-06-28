@@ -6,56 +6,67 @@ from django.urls import reverse
 
 
 def comprar(request):
-    carrito = request.session.get("carrito", [])
-    total = 0
-    for item in carrito:
-        total += item["subtotal"]
-    venta = Venta()
-    venta.cliente = request.user
-    venta.total = total
-    venta.save()
-    for item in carrito:
-        detalle = DetalleVenta()
-        ventas_usuario = DetalleVenta.objects.filter(venta__cliente=request.user)
-        if ventas_usuario:
-            for venta in ventas_usuario:
-                if venta.producto.id == item["id"]:
-                    venta.cantidad += item["cantidad"]
-                    venta.save()
+    if request.user.is_authenticated:
+        carrito = request.session.get("carrito", [])
+        total = 0
+        for item in carrito:
+            total += item["subtotal"]
+
+        venta = Venta()
+        venta.cliente = request.user
+        venta.total = total
+        venta.save()
+        
+        for item in carrito:
+            detalle_found = False
+            ventas_usuario = DetalleVenta.objects.filter(venta__cliente=request.user, producto__id=item["id"])
+            
+            for detalle in ventas_usuario:
+                if detalle.producto.id == item["id"]:
+                    detalle.cantidad += item["cantidad"]
+                    detalle.save()
+                    detalle_found = True
                     break
-            else:
+            
+            if not detalle_found:
+                detalle = DetalleVenta()
                 detalle.producto = Producto.objects.get(id=item["id"])
                 detalle.precio = item["precio"]
                 detalle.cantidad = item["cantidad"]
                 detalle.venta = venta
                 detalle.save()
-    del request.session["carrito"]
-    return redirect(reverse(carro) + "#titleCarrito")
+
+        del request.session["carrito"]
+        return redirect(reverse('carro') + "#titleCarrito")
+    else:
+        return redirect("login")
 
 
 def comprarUnProducto(request, id):
-    #if producto existe detalle venta aumentar cantidad + 1
-    #else crear detalle venta con cantidad 1
-    ventas_usuario = DetalleVenta.objects.filter(venta__cliente=request.user)
-    for venta in ventas_usuario:
-        if venta.producto.id == id:
-            venta.cantidad += 1
+    if request.user.is_authenticated:
+        ventas_usuario = DetalleVenta.objects.filter(venta__cliente=request.user)
+        for venta in ventas_usuario:
+            if venta.producto.id == id:
+                venta.cantidad += 1
+                venta.venta.total = venta.cantidad * venta.precio
+                venta.save()
+                venta.venta.save()
+                return redirect(reverse('detalle', args=[id]))
+        else:
+            producto = Producto.objects.get(id=id)
+            venta = Venta()
+            venta.cliente = request.user
+            venta.total = producto.precio
             venta.save()
+            detalle = DetalleVenta()
+            detalle.producto = producto
+            detalle.precio = producto.precio
+            detalle.cantidad = 1
+            detalle.venta = venta
+            detalle.save()
             return redirect(reverse('detalle', args=[id]))
     else:
-        producto = Producto.objects.get(id=id)
-        venta = Venta()
-        venta.cliente = request.user
-        venta.total = producto.precio
-        venta.save()
-        detalle = DetalleVenta()
-        detalle.producto = producto
-        detalle.precio = producto.precio
-        detalle.cantidad = 1
-        detalle.venta = venta
-        detalle.save()
-        return redirect(reverse('detalle', args=[id]))
-    
+        return redirect("login")
 
 def home(request):
     notes = Producto.objects.filter(id_tipo_producto=1)
@@ -72,6 +83,7 @@ def carro(request):
         uComprados = DetalleVenta.objects.filter(venta__cliente=request.user)
         return render(request, "Carrito.html", {"uComprados": uComprados})
     else:
+        uComprados = 'none'
         return render(request, "Carrito.html")
 
 
