@@ -1,68 +1,127 @@
-{% extends "plantilla.html" %}
+{% extends 'plantilla.html' %}
 {% load static %}
 {% load humanize %}
 
 {% block links %}
-<link rel="stylesheet" href="{% static "css/carrito.css" %}">
-{% endblock links %}
+  <link rel="stylesheet" href="{% static 'css/carrito.css' %}" />
+  <script src="{% static 'js/VerCompras.js' %}"></script>
+{% endblock %}
 {% load static %}
 {% block content %}
-<main id="carrito_container" class="container pt-5 bg-white rounded-3 pt-4 pb-4 pb-5">
-  <div class="text-center fs-3 fw-bold">
-    <svg class="" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 22 20"
-      fill="#000000">
-      <path
-        d="M0.926316 4.21713e-05C0.680642 4.21713e-05 0.44503 0.105399 0.271312 0.292935C0.0975939 0.480471 0 0.734824 0 1.00004C0 1.26526 0.0975939 1.51961 0.271312 1.70715C0.44503 1.89468 0.680642 2.00004 0.926316 2.00004H2.98274L5.41339 12.5C5.61996 13.39 6.35823 14 7.20766 14H17.8325C18.669 14 19.3795 13.4 19.599 12.53L22 3.00004H6.48421L6.94737 5.00003H19.5971L17.8316 12H7.20674L4.77701 1.50004C4.67664 1.06927 4.44527 0.687319 4.11996 0.415355C3.79464 0.143391 3.39419 -0.00285293 2.98274 4.21713e-05H0.926316ZM16.6737 14C15.1499 14 13.8947 15.355 13.8947 17C13.8947 18.645 15.1499 20 16.6737 20C18.1975 20 19.4526 18.645 19.4526 17C19.4526 15.355 18.1975 14 16.6737 14ZM8.33684 14C6.81305 14 5.5579 15.355 5.5579 17C5.5579 18.645 6.81305 20 8.33684 20C9.86063 20 11.1158 18.645 11.1158 17C11.1158 15.355 9.86063 14 8.33684 14ZM8.33684 16C8.85928 16 9.26316 16.436 9.26316 17C9.26316 17.564 8.85928 18 8.33684 18C7.8144 18 7.41053 17.564 7.41053 17C7.41053 16.436 7.8144 16 8.33684 16ZM16.6737 16C17.1961 16 17.6 16.436 17.6 17C17.6 17.564 17.1961 18 16.6737 18C16.1512 18 15.7474 17.564 15.7474 17C15.7474 16.436 16.1512 16 16.6737 16Z"
-        fill="#000000"> </path>
-    </svg> <span id="titleCarrito" class="text-center" style="width: 40px !important; height: 40px; !important ">Tu Carrito</span></div>
-  {% if request.session.carrito|length > 0 %}
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Producto</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Cantidad</th>
-          <th scope="col">Total</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody class="">
-        {% for producto in request.session.carrito %}
-        <tr id="item_carrito" class="flex-grow-1">
-          <th scope="row">{{forloop.counter}}</th>
-          <td><img src="{{producto.imagen}}" alt="Producto 1" style="max-width: 50px;"></td>
-          <td id="detalle"><a href="{% url 'detalle' producto.id %}"   class="text-body-secondary text-decoration-none fw-bold">{{producto.nombre}}</a></td>
-          <td>${{producto.precio|intcomma}}</td>
-          <td>{{producto.cantidad}}</td>
-          <td>${{producto.subtotal|intcomma}}</td>
-          <td>
-            <a id="btnDelToCar" href="{% url "delToCar" producto.id %}" class="btn btn-outline-danger"><img
-                src="https://img.icons8.com/material-rounded/24/full-trash.png" alt="full-trash" /></a>
-          </td>
-          <td>
-            <a id="btnDelToCar" href="{% url "addToCar" producto.id 'carro' 'titleCarrito'%}" class="btn btn-outline-danger"><span
-                class="fw-bolder text-center" style="height:24px !important; width:24px !important;">+</span></a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <div class="d-grid gap-2 col-6 mt-3 mb-3">
-    <a href="{% url "comprar" %}" class="btn border border-black bg-black text-white border-2 border-end-0 border-start-0 rounded-0"
-      type="button">Finalizar Compra</a>
-  </div>
-  {% else %}
-  <h4>Tu carrito esta vacio</h4>
-  {% endif %}
-
-</main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-
-{% endblock content %}
+  <main id="carrito_container" class="container pt-5 bg-white rounded-3 pt-4 pb-4 pb-5">
+    <div class="text-center fs-3 fw-bold">
+      <svg class="" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 22 20" fill="#000000">
+        <path d="M0.926316 4.21713e-05C0.680642 4.21713e-05 0.44503 0.105399 0.271312 0.292935C0.0975939 0.480471 0 0.734824 0 1.00004C0 1.26526 0.0975939 1.51961 0.271312 1.70715C0.44503 1.89468 0.680642 2.00004 0.926316 2.00004H2.98274L5.41339 12.5C5.61996 13.39 6.35823 14 7.20766 14H17.8325C18.669 14 19.3795 13.4 19.599 12.53L22 3.00004H6.48421L6.94737 5.00003H19.5971L17.8316 12H7.20674L4.77701 1.50004C4.67664 1.06927 4.44527 0.687319 4.11996 0.415355C3.79464 0.143391 3.39419 -0.00285293 2.98274 4.21713e-05H0.926316ZM16.6737 14C15.1499 14 13.8947 15.355 13.8947 17C13.8947 18.645 15.1499 20 16.6737 20C18.1975 20 19.4526 18.645 19.4526 17C19.4526 15.355 18.1975 14 16.6737 14ZM8.33684 14C6.81305 14 5.5579 15.355 5.5579 17C5.5579 18.645 6.81305 20 8.33684 20C9.86063 20 11.1158 18.645 11.1158 17C11.1158 15.355 9.86063 14 8.33684 14ZM8.33684 16C8.85928 16 9.26316 16.436 9.26316 17C9.26316 17.564 8.85928 18 8.33684 18C7.8144 18 7.41053 17.564 7.41053 17C7.41053 16.436 7.8144 16 8.33684 16ZM16.6737 16C17.1961 16 17.6 16.436 17.6 17C17.6 17.564 17.1961 18 16.6737 18C16.1512 18 15.7474 17.564 15.7474 17C15.7474 16.436 16.1512 16 16.6737 16Z" fill="#000000"></path>
+      </svg> <span id="titleCarrito" class="text-center" style="width: 40px !important; height: 40px; !important ">Tu Carrito</span>
+    </div>
+    {% if request.session.carrito|length > 0 %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Total</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="">
+            {% for producto in request.session.carrito %}
+              <tr id="item_carrito" class="flex-grow-1">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>
+                  <img src="{{ producto.imagen }}" alt="Producto 1" style="max-width: 50px;" />
+                </td>
+                <td id="detalle">
+                  <a href="{% url 'detalle' producto.id %}" class="text-body-secondary text-decoration-none fw-bold">{{ producto.nombre }}</a>
+                </td>
+                <td>${{ producto.precio|intcomma }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td>${{ producto.subtotal|intcomma }}</td>
+                <td>
+                  <a id="btnDelToCar" href="{% url 'delToCar' producto.id %}" class="btn btn-outline-danger shadow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30">
+                    <path d="M13.59375 4L13.28125 4.28125L12.5625 5L6 5L6 7L7 7L7 25C7 26.644531 8.355469 28 10 28L22 28C23.644531 28 25 26.644531 25 25L25 7L26 7L26 5L19.4375 5L18.71875 4.28125L18.40625 4 Z M 14.4375 6L17.5625 6L18.28125 6.71875L18.59375 7L23 7L23 25C23 25.554688 22.554688 26 22 26L10 26C9.445313 26 9 25.554688 9 25L9 7L13.40625 7L13.71875 6.71875 Z M 11 11L11 22L13 22L13 11 Z M 15 11L15 22L17 22L17 11 Z M 19 11L19 22L21 22L21 11Z" />
+                  </svg></a>
+                </td>
+                <td>
+                  <a id="btnDelToCar" href="{% url 'addToCar' producto.id 'carro' 'titleCarrito' %}" class="btn btn-outline-success shadow"><span class="fw-bolder text-center" style="height:24px !important; width:24px !important;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30">
+                    <path d="M4 7C3.449219 7 3 7.449219 3 8C3 8.550781 3.449219 9 4 9L6.21875 9L8.84375 19.5C9.066406 20.390625 9.863281 21 10.78125 21L23.25 21C24.152344 21 24.917969 20.402344 25.15625 19.53125L27.75 10L25.65625 10L23.25 19L10.78125 19L8.15625 8.5C7.933594 7.609375 7.136719 7 6.21875 7 Z M 22 21C20.355469 21 19 22.355469 19 24C19 25.644531 20.355469 27 22 27C23.644531 27 25 25.644531 25 24C25 22.355469 23.644531 21 22 21 Z M 13 21C11.355469 21 10 22.355469 10 24C10 25.644531 11.355469 27 13 27C14.644531 27 16 25.644531 16 24C16 22.355469 14.644531 21 13 21 Z M 16 7L16 10L13 10L13 12L16 12L16 15L18 15L18 12L21 12L21 10L18 10L18 7 Z M 13 23C13.5625 23 14 23.4375 14 24C14 24.5625 13.5625 25 13 25C12.4375 25 12 24.5625 12 24C12 23.4375 12.4375 23 13 23 Z M 22 23C22.5625 23 23 23.4375 23 24C23 24.5625 22.5625 25 22 25C21.4375 25 21 24.5625 21 24C21 23.4375 21.4375 23 22 23Z" />
+                  </svg></span></a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="w-100 py-2">
+        <a href="{% url 'comprar' %}" class="btn btn-light py-2 border border-dark-subtle" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="31" height="31">
+          <path d="M4 7C3.449219 7 3 7.449219 3 8C3 8.550781 3.449219 9 4 9L6.21875 9L8.84375 19.5C9.066406 20.390625 9.863281 21 10.78125 21L23.25 21C24.152344 21 24.917969 20.402344 25.15625 19.53125L27.75 10L25.65625 10L23.25 19L10.78125 19L8.15625 8.5C7.933594 7.609375 7.136719 7 6.21875 7 Z M 22 21C20.355469 21 19 22.355469 19 24C19 25.644531 20.355469 27 22 27C23.644531 27 25 25.644531 25 24C25 22.355469 23.644531 21 22 21 Z M 13 21C11.355469 21 10 22.355469 10 24C10 25.644531 11.355469 27 13 27C14.644531 27 16 25.644531 16 24C16 22.355469 14.644531 21 13 21 Z M 16 7L16 12L13 12L17 16L21 12L18 12L18 7 Z M 13 23C13.5625 23 14 23.4375 14 24C14 24.5625 13.5625 25 13 25C12.4375 25 12 24.5625 12 24C12 23.4375 12.4375 23 13 23 Z M 22 23C22.5625 23 23 23.4375 23 24C23 24.5625 22.5625 25 22 25C21.4375 25 21 24.5625 21 24C21 23.4375 21.4375 23 22 23Z" />
+        </svg><span>Comprar Todo</span></a>
+      </div>
+    {% else %}
+      <div class="d-flex justify-content-center align-items-center">
+        <h4>Tu carrito esta vacio</h4>
+      </div>
+    {% endif %}
+    <div class="border border-dark-subtle border-1"></div>
+    <div id="pComprados" class="pt-1">
+      <div>
+        <button id="btnCompras" class="w-25 btn d-flex gap-2">
+          <span>Ver tus compras</span>
+          <svg id="flechaArriba" class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24">
+            <path d="M16 6.59375L15.28125 7.28125L2.78125 19.78125L4.21875 21.21875L16 9.4375L27.78125 21.21875L29.21875 19.78125L16.71875 7.28125Z" />
+          </svg>
+           <svg id="flechaAbajo" class="d-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24">
+            <path d="M4.21875 10.78125L2.78125 12.21875L15.28125 24.71875L16 25.40625L16.71875 24.71875L29.21875 12.21875L27.78125 10.78125L16 22.5625Z" />
+          </svg>
+        </button>
+      </div>
+      <div id="verCompras" class="abierto">
+        <div class="text-center fs-3 fw-bold">
+          
+        </div>
+        <div class="d-flex flex-column gap-3">
+          {% if user.is_authenticated %}
+            {% for producto in uComprados %}
+              <div class="d-flex flex-grow-1 flex-column justify-content-between border border-dark-subtle rounded-2 border-1 container shadow">
+                <div class="d-flex w-100 py-2 justify-content-between flex-wrap">
+                  <span style="font-size: small;" class="fw-semibold ">{{producto.venta.fecha}}</span>
+                  <span class="fw-semibold">${{producto.precio|intcomma}}</span>
+                </div>
+                <div class="border border-dark-subtle border-1"></div>
+              <div class="d-flex flex-column">
+                <div>
+                  <div class="d-flex">
+                    <div>
+                      <img src="{{ producto.producto.imagen }}" alt="Producto 1" style="max-width: 100px;" />
+                    </div>
+                    <div class="d-flex flex-column container my-auto">
+                      <span class="text-success fw-bold">Comprado</span>
+                      <span class="text-black-50">{{producto.producto.descripcion}}</span>
+                      {% if producto.cantidad > 1 %}
+                      <span class="text-black-50">{{producto.cantidad}} Unidades</span>
+                      {% else %}
+                      <span class="text-black-50">{{producto.cantidad}} Unidad</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                 </div>
+                 <div class="d-flex ms-auto gap-2 py-2">
+                  <a href="{% url 'detalle' producto.producto.id %}" class="btn btn-dark">Ver Detalle</a>
+                  <a href="{% url 'addToCar' producto.producto.id 'carro' 'titleCarrito' %}" class="btn btn-dark">Añadir al Carrito</a>
+                </div>
+              </div>
+               
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}

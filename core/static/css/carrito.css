@@ -22,3 +22,11 @@
     color: black !important;
     transition: 0.3s all !important;
 }
+
+.cerrado{
+    display: none;
+}
+.abierto{
+    animation-name: carrito;
+    animation-duration: 1s;
+}
