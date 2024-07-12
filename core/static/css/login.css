@@ -20,6 +20,9 @@ label {
     width: 100%;
     text-align: start;
     font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 1px;
+
 }
 input{
     box-shadow: none;
@@ -31,13 +34,12 @@ input:focus{
 }
 
 .errorlist{
-    list-style-type: none;
+    list-style-type: "";
     width: 100%;
     text-transform: capitalize;
     padding: 0px;
-    font-weight: light;
     font-style: italic;
-    font-size: 3vh;
+    font-size: medium;
     width: 100%;
     color: red;
     text-align: start;
@@ -51,9 +53,10 @@ input:focus{
     padding: 0px;
     font-weight: light;
     font-style: italic;
-    font-size: 3vh;
+    font-size: 15px;
     width: 100%;
     text-align: start;
+    padding-bottom: 5px !important;
 }
 
 

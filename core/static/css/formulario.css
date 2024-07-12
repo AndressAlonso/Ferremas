@@ -3,6 +3,6 @@ label {
     text-align: start;
     font-weight: 500;
 }
- input{
-    border: black 1px !important;
- }
+input{
+    box-shadow: none;
+}

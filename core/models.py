@@ -29,7 +29,15 @@ class Producto (models.Model):
     precio = models.IntegerField()
     
     def __str__(self):
-        return self.descripcion 
+        return self.descripcion
+
+# class DetalleProducto(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     producto = models.ForeignKey(to=Producto, on_delete=models.CASCADE)
+#     ram = models.CharField(max_length=50)
+#     procesador = models.CharField(max_length=50)
+#     almacenamiento = models.CharField(max_length=50)
+#     pantalla = models.CharField(max_length=50)
 
 class DetalleVenta(models.Model):
     id = models.AutoField(primary_key=True)

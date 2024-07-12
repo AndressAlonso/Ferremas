@@ -8,13 +8,14 @@
         transition: 1s all;
     }
 }
-
+#carousel{
+    min-height: 80vh;   
+}
 .carousel-item>a>img{
     max-height: 560.807px;
-
 }
 #image-card {
-    height: 50vh;
+    height: 30vh;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,7 +30,6 @@
     #card {
         flex-grow: 1;
         max-width: 23%;
-
     }
 }
 
@@ -40,31 +40,23 @@
     
 }
 
-.card:hover {
-    -webkit-box-shadow: 0px 5px 27px -5px rgba(0, 0, 0, 0.64);
-    -moz-box-shadow: 0px 5px 27px -5px rgba(0, 0, 0, 0.64);
-    box-shadow: 0px 5px 27px -5px rgba(0, 0, 0, 0.64);
-
+#idCard{
+    font-size: small;
 }
 
-#card:hover {
-    transform: scale(1.01);
-
+#AddToCarro:hover{
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+    color: #fff;
     transition: 0.5s all;
+
 }
 
-#card #carritodetalle {
-    opacity: 0 !important;
-    pointer-events: none !important;
+#cardMarca{
+    font-size: small;
 }
 
-#card:hover #carritodetalle {
-    opacity: 1 !important;
-    transition: 0.5s all;
-    pointer-events: auto !important;
-}
-
-#card:hover #carritodetalle {
-    animation-name: bajar;
-    animation-duration: 0.5s;
+#cardDesc{
+    font-size: small;
+    line-height: 1.5;
 }

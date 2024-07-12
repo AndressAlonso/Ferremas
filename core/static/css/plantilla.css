@@ -17,16 +17,51 @@
 }
 
 @keyframes aparecer {
-    0%{
+    0% {
         opacity: 0;
     }
-    100%{
+
+    100% {
         opacity: 1;
     }
 }
-main{
-animation: aparecer 0.2s;
+
+
+main {
+    animation: aparecer 0.2s;
 }
+
 nav a {
     height: 30px;
+}
+
+@keyframes mensajeAparecer {
+    0% {
+        top: 100%;
+    }
+
+    100% {
+        top: 90%;
+    }
+}
+
+@keyframes mensajeDesaparecer {
+    100% {
+        top: 100%;
+    }
+
+    0% {
+        top: 90%;
+    }
+}
+
+#mensaje {
+    display: flex !important;
+    animation: mensajeAparecer 0.5s;
+    animation-fill-mode: forwards;
+    position: fixed !important;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
 }

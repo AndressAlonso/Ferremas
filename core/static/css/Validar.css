@@ -1,26 +1,75 @@
 input {
+    font-size: 18px;
+	padding: 5px 10px;
+	width: 100%;
+	padding-left: 35px;
+	outline: none;
+	background: #FFFFFF;
+	color: #000000;
+	border: 1px solid #C4D1EB;
+	border-radius: 5px;
+	box-shadow: 3px 3px 2px 0px #E2E2E2;
+	transition: .3s ease;
+}
+select{
+    font-size: 18px;
+	padding: 5px 10px;
+	width: 100%;
+	padding-left: 35px;
+	outline: none;
+	background: #FFFFFF;
+	color: #000000;
+	border: 1px solid #C4D1EB;
+	border-radius: 5px;
+	box-shadow: 3px 3px 2px 0px #E2E2E2;
+	transition: .3s ease;
+}
+select:focus{
     box-shadow: none !important;
+    background: #F2F2F2;
+}
+textarea{
+    font-size: 18px;
+	padding: 5px 10px;
+	width: 100%;
+	padding-left: 35px;
+	outline: none;
+	background: #FFFFFF;
+	color: #000000;
+	border: 1px solid #C4D1EB;
+	border-radius: 5px;
+	box-shadow: 3px 3px 2px 0px #E2E2E2;
+	transition: .3s ease;
+}
+textarea:focus{
+    box-shadow: none !important;
+    background: #F2F2F2;
+    border: 1px solid #C4D1EB  !important;
+	border-radius: 5px !important;
+	box-shadow: 3px 3px 2px 0px #E2E2E2 !important;
+	transition: .3s ease;
 }
 
 .correct:focus {
+    background: #F2F2F2;
     border: 1.5px #00e00ff3 solid !important;
-    box-shadow: 3px 3px #00e00ff3 !important;
-    transition: 0.5s all;
+    box-shadow: 1.5px 1.5px #00e00ff3 !important;
+    transition: 0.3s all;
 }
 
 .incorrect:focus {
+    background: #F2F2F2;
     border: 1.5px #fc2702f3 solid !important;
-    box-shadow: 3px 3px #fc2702f3 !important;
-    transition: 0.5s all;
+    box-shadow: 1.5px 1.5px #fc2702f3 !important;
+    transition: 0.3s all;
 }
 
 #SSTelPaises{
     font-size: 14px;
     width: 7em;
 }
-input:-internal-autofill-selected {
-    appearance: menulist-button;
-    background-image: none !important;
-    background-color: white !important;
-    color: fieldtext !important;
+
+label{
+	font-size: 14px;
+	margin-bottom: 10px;
 }

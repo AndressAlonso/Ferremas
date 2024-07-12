@@ -3,7 +3,19 @@ from .models import *
 from django.contrib.auth.views import logout_then_login
 from .forms import *
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.views import LoginView
 
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+    next_page = 'home'  
+
+    def form_valid(self, form):
+        # Call the parent form_valid method
+        response = super().form_valid(form)
+        # Add a success message
+        messages.success(self.request, 'Has iniciado sesión correctamente ' + self.request.user.username)
+        return response
 
 def comprar(request):
     if request.user.is_authenticated:
@@ -37,41 +49,31 @@ def comprar(request):
                 detalle.save()
 
         del request.session["carrito"]
+        messages.success(request, 'Compra realizada correctamente')
         return redirect(reverse('carro') + "#titleCarrito")
     else:
+        messages.success(request, 'Debe iniciar sesión para comprar productos')
         return redirect("login")
 
 
 def comprarUnProducto(request, id):
     if request.user.is_authenticated:
-        ventas_usuario = DetalleVenta.objects.filter(venta__cliente=request.user)
-        for venta in ventas_usuario:
-            if venta.producto.id == id:
-                venta.cantidad += 1
-                venta.venta.total = venta.cantidad * venta.precio
-                venta.save()
-                venta.venta.save()
-                return redirect(reverse('detalle', args=[id]))
-        else:
-            producto = Producto.objects.get(id=id)
-            venta = Venta()
-            venta.cliente = request.user
-            venta.total = producto.precio
-            venta.save()
-            detalle = DetalleVenta()
-            detalle.producto = producto
-            detalle.precio = producto.precio
-            detalle.cantidad = 1
-            detalle.venta = venta
-            detalle.save()
-            return redirect(reverse('detalle', args=[id]))
+        producto = Producto.objects.get(id=id)        
+        venta = Venta(cliente=request.user, total=producto.precio)
+        venta.save()
+        
+        detalle = DetalleVenta(producto=producto, precio=producto.precio, cantidad=1, venta=venta)
+        detalle.save()
+        
+        messages.success(request, 'Compra realizada correctamente')
+        return redirect(reverse('detalle', args=[id]))
     else:
+        messages.error(request, 'Debe iniciar sesión para comprar productos')
         return redirect("login")
 
 def home(request):
-    notes = Producto.objects.filter(id_tipo_producto=1)
-    smartphones = Producto.objects.filter(id_tipo_producto=2)
-    return render(request, "index.html", {"notes": notes, "fonos": smartphones})
+    productos = Producto.objects.all()
+    return render(request, "index.html", {"productos": productos})
 
 
 def form(request):
@@ -97,7 +99,7 @@ def detalle(request, id):
 
 
 def logout(request):
-
+    messages.success(request, 'Sesión cerrada correctamente')
     return logout_then_login(request, "login")
 
 
@@ -112,6 +114,7 @@ def delToCar(request, id):
     else:
         carrito.remove(item)
     request.session["carrito"] = carrito
+    messages.success(request, 'Producto eliminado del carrito')
     return redirect(reverse(carro) + "#titleCarrito")
 
 
@@ -136,7 +139,7 @@ def addToCar(request, id, view, btn):
         )
 
     request.session["carrito"] = carrito
-
+    messages.success(request, 'Producto añadido al carrito')
     return redirect(reverse(view) + "#" + btn)
 
 
@@ -145,6 +148,7 @@ def registro(request):
         registro = Registro(request.POST)
         if registro.is_valid():
             registro.save()
+            messages.success(request, 'Usuario registrado correctamente')
             return redirect(to="login")
     else:
         registro = Registro()

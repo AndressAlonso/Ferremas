@@ -2,132 +2,105 @@
 {% load static %}
 {% load humanize %}
 {% block links %}
-  <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+<link rel="stylesheet" href="{% static 'css/index.css' %}" />
 {% endblock %}
 
 {% block content %}
-  <header>
-    <div id="carousel" class="carousel slide px-0 pb-3 container-fluid shadow" data-bs-ride="carousel" data-bs-theme="dark">
-      <div class="carousel-inner">
-        <div class="carousel-item active ">
-          <a href=""><img src="https://static3.webx.pk/files/17888/Images/Banner_020123041328_464390.jpg" class="w-100" alt="Promoción Días Samsung" /></a>
-        </div>
-        <div class="carousel-item">
-          <a href=""><img src="https://static3.webx.pk/files/17888/Images/Banner_020123041329_465623.jpg" class="w-100" alt="Producto 3" /></a>
-        </div>
-         
+<header>
+  <div id="carousel" class="carousel slide px-0 container-fluid shadow" data-bs-ride="carousel" data-bs-theme="dark">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <a href=""><img src="https://static3.webx.pk/files/17888/Images/Banner_020123041328_464390.jpg"
+            class="w-100 top-50" alt="Promoción Días Samsung" /></a>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Anterior</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Siguiente</span>
-      </button>
-    </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Iniciar Sesion</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body border-bottom-0 m-auto">
-            <div id="rut-login" class="text-center">
-              <label class="form-label" for="rut-login">RUT</label>
-              <input type="text" id="f.rut-login" class="form-control border-dark border-opacity-50" placeholder="12765832-9" />
-              <div id="contraseña-login" class="mt-3 mb-3">
-                <label class="form-label" for="contraseña-login">Password</label>
-                <input type="password" id="f.contraseña-login" class="form-control border-dark border-opacity-50" placeholder="Tu Contraseña" />
-              </div>
-              <button type="button" class="btn w-100 bg-dark text-white">Iniciar Sesión</button>
-            </div>
-            <div class="modal-footer text-center d-flex text-black border-top-0">
-              <a href="Login.html" class="w-100 h-100"><button class="btn link-body-emphasis">¿No tienes cuenta? Regístrate</button></a>
-              <a href="" class="link-body-emphasis w-100 text-decoration-none">¿Olvidaste tu contraseña?</a>
-            </div>
-          </div>
-        </div>
+      <div class="carousel-item">
+        <a href=""><img src="https://static3.webx.pk/files/17888/Images/Banner_020123041329_465623.jpg" class="w-100"
+            alt="Producto 3" /></a>
       </div>
     </div>
-  </header>
-  <main class="mb-5 d-flex flex-column gap-3">
-    <div class="container">
-      <div id="Recomendaciones-title" class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
-        <span class="fw-bold">Notebooks</span>
-      </div>
-      <div id="cards_container" class="row row-cols-1 d-flex row-cols-md-2 row-cols-lg-3 g-4">
-        {% for producto in notes %}
-          {% if forloop.counter <=   4 %}
-            <div id="card" class="col">
-              <div id="title_card1" class="card rounded-3">
-                <div class="card-header bg-white">
-                  <div class="d-flex w-100 justify-content-between">
-                    <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
-                    <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
-                  </div>
-                  <div style="height: 70px !important;">{{ producto.descripcion }}</div>
-                </div>
-                <div class="card-body border-black">
-                  <div class="d-flex justify-content-between">
-                    <div class="text-black fw-light">UID: {{ producto.id }}</div>
-                  </div>
-                  <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
-                </div>
-                <div class="card-footer d-flex bg-white w-100 px-0 justify-content-around align-items-center">
-                  <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
-                  <h6 class="text-black fw-semibold">${{ producto.precio|intcomma }}</h6>
-                </div>
-              </div>
-              <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center">
-                <div id="carritobtn1" class="d-flex justify-content-center align-items-center">
-                  <a href="{% url 'addToCar' producto.id 'home' 'title_card1' %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">+ Carrito</a>
-                </div>
-                <div id="detallebtn" class="d-flex justify-content-center align-items-center">
-                  <a href="{% url 'detalle' producto.id %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">Ver Detalle</a>
-                </div>
-              </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Iniciar Sesion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body border-bottom-0 m-auto">
+          <div id="rut-login" class="text-center">
+            <label class="form-label" for="rut-login">RUT</label>
+            <input type="text" id="f.rut-login" class="form-control border-dark border-opacity-50"
+              placeholder="12765832-9" />
+            <div id="contraseña-login" class="mt-3 mb-3">
+              <label class="form-label" for="contraseña-login">Password</label>
+              <input type="password" id="f.contraseña-login" class="form-control border-dark border-opacity-50"
+                placeholder="Tu Contraseña" />
             </div>
-          {% endif %}
-        {% endfor %}
+            <button type="button" class="btn w-100 bg-dark text-white">Iniciar Sesión</button>
+          </div>
+          <div class="modal-footer text-center d-flex text-black border-top-0">
+            <a href="Login.html" class="w-100 h-100"><button class="btn link-body-emphasis">¿No tienes cuenta?
+                Regístrate</button></a>
+            <a href="" class="link-body-emphasis w-100 text-decoration-none">¿Olvidaste tu contraseña?</a>
+          </div>
+        </div>
       </div>
-      <div id="Recomendaciones-title" class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
-        <span class="fw-bold">Smartphones</span>
-      </div>
-      <div id="cards_container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for producto in fonos %}
-          <div id="card" class="col">
-            <div id="title_card2" class="card rounded-3">
-              <div class="card-header bg-white">
-                <div class="d-flex w-100 justify-content-between">
-                  <div class="text-black fw-semibold">{{ producto.id_marca.nombre }}</div>
-                  <div class="text-black-50 fw-light">{{ producto.id_tipo_producto.nombre }}</div>
-                </div>
-                <div style="height: 70px !important;">{{ producto.descripcion }}</div>
+    </div>
+  </div>
+</header>
+<main class="mb-5 d-flex flex-column gap-3">
+  <div class="container">
+    <div id="Recomendaciones-title"
+      class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
+      <span class="fw-bold">Productos</span>
+    </div>
+    <div id="cards_container" class="row row-cols-1 d-flex row-cols-md-2 row-cols-lg-3 g-4">
+      {% for producto in productos %}
+      <div id="card" class="col">
+        <div id="title_card1" class="card rounded-1 border-0 shadow">
+          <div class="card-header bg-body border-bottom-0">
+            <a href="{% url 'detalle' producto.id %}" id="image-card"
+              class="d-flex justify-content-center align-items-center pointer-event m-1"
+              style="background-image: url({{ producto.imagen }});"></a>
+          </div>
+          <div class="card-body border-black py-2 border-bottom-0">
+            <div class="d-flex justify-content-between">
+              <div class="text-black fw-light" id="idCard">
+                ID: <span class="fw-bolder">{{ producto.id }}</span>
               </div>
-              <div class="card-body border-black">
-                <div class="d-flex justify-content-between">
-                  <div class="text-black fw-light">UID: {{ producto.id }}</div>
-                </div>
-                <div id="image-card" style="background-image: url({{ producto.imagen }});"></div>
-              </div>
-              <div class="card-footer d-flex bg-white w-100 justify-content-around px-0 align-items-center">
-                <h6 class="text-black-50 fw-light">Quedan {{ producto.stock }} Unid.</h6>
-                <h6 class="text-black fw-semibold">${{ producto.precio|intcomma }}</h6>
-              </div>
-            </div>
-            <div id="carritodetalle" class="opacity-0 d-flex justify-content-around rounded-3 align-items-center gap-1">
-              <div id="carritobtn2" class="d-flex justify-content-center align-items-center">
-                <a href="{% url 'addToCar' producto.id 'home' 'title_card2'  %}" class="text-decoration-none bg-black text-white text-center rounded-bottom-2 px-2 py-1">+ Carrito</a>
-              </div>
-              <div id="detallebtn" class="d-flex justify-content-center align-items-center">
-                <a href="{% url 'detalle' producto.id %}" class="text-decoration-none bg-black px-2 py-1 text-white text-center rounded-bottom-2">Ver Detalle</a>
+              <div>
+                <h6 class="text-black fw-light" id="idCard">{{ producto.stock|intcomma }} Unid.</h6>
               </div>
             </div>
           </div>
-        {% endfor %}
+          <div class="card-footer px-0 border-top-0 bg-body">
+            <div class="d-flex w-100 justify-content-between px-3">
+              <div class="text-black fw-semibold" id="cardMarca">{{ producto.id_marca.nombre }}</div>
+            </div>
+            <div class="px-3" id="cardDesc">{{ producto.descripcion }}</div>
+            <div class="d-flex px-3 w-100 py-1">
+              <span class="text-black fs-6 fw-semibold">${{ producto.precio|intcomma }}</span>
+            </div>
+          </div>
+          <div id="carritobtn2" class="d-flex justify-content-center align-items-center w-100">
+            <a href="{% url 'addToCar' producto.id 'home' 'title_card1' %}"
+              class=" rounded-bottom-1 flex-fill text-decoration-none bg-body text-body text-center py-2" id="AddToCarro">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30">
+                <path d="M4 7C3.449219 7 3 7.449219 3 8C3 8.550781 3.449219 9 4 9L6.21875 9L8.84375 19.5C9.066406 20.390625 9.863281 21 10.78125 21L23.25 21C24.152344 21 24.917969 20.402344 25.15625 19.53125L27.75 10L25.65625 10L23.25 19L10.78125 19L8.15625 8.5C7.933594 7.609375 7.136719 7 6.21875 7 Z M 22 21C20.355469 21 19 22.355469 19 24C19 25.644531 20.355469 27 22 27C23.644531 27 25 25.644531 25 24C25 22.355469 23.644531 21 22 21 Z M 13 21C11.355469 21 10 22.355469 10 24C10 25.644531 11.355469 27 13 27C14.644531 27 16 25.644531 16 24C16 22.355469 14.644531 21 13 21 Z M 16 7L16 10L13 10L13 12L16 12L16 15L18 15L18 12L21 12L21 10L18 10L18 7 Z M 13 23C13.5625 23 14 23.4375 14 24C14 24.5625 13.5625 25 13 25C12.4375 25 12 24.5625 12 24C12 23.4375 12.4375 23 13 23 Z M 22 23C22.5625 23 23 23.4375 23 24C23 24.5625 22.5625 25 22 25C21.4375 25 21 24.5625 21 24C21 23.4375 21.4375 23 22 23Z" />
+              </svg></a>
+          </div>
+        </div>
       </div>
+      {% endfor %}
     </div>
-  </main>
+  </div>
+</main>
 {% endblock %}
