@@ -27,18 +27,15 @@ class Producto (models.Model):
     stock = models.IntegerField()
     imagen = models.CharField(max_length=255)
     precio = models.IntegerField()
-    ram = models.CharField(max_length=80,default='')
-    procesador = models.CharField(max_length=80,default='')
-    almacenamiento = models.CharField(max_length=80,default='')
-    tamaño_pantalla = models.CharField(max_length=80,default='')
-    capacidad_bateria = models.CharField(max_length=80,default='')
-    color = models.CharField(max_length=80,default='')
+    ram = models.CharField(max_length=80,default='No Registrado')
+    procesador = models.CharField(max_length=80,default='No Registrado')
+    almacenamiento = models.CharField(max_length=80,default='No Registrado')
+    tamaño_pantalla = models.CharField(max_length=80,default='No Registrado')
+    capacidad_bateria = models.CharField(max_length=80,default='No Registrado')
+    color = models.CharField(max_length=80,default='No Registrado')
     def __str__(self):
         return self.descripcion
 
-# class DetalleProducto(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     
 
 class DetalleVenta(models.Model):
     id = models.AutoField(primary_key=True)
