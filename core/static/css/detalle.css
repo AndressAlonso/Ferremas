@@ -1,7 +1,6 @@
 #detallesUl {
-    list-style: "> ";
+    list-style: circle;
 }
-
 
 #image_detalle {
     flex-grow: 1 !important;

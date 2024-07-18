@@ -11,9 +11,7 @@ class CustomLoginView(LoginView):
     next_page = 'home'  
 
     def form_valid(self, form):
-        # Call the parent form_valid method
         response = super().form_valid(form)
-        # Add a success message
         messages.success(self.request, 'Has iniciado sesión correctamente ' + self.request.user.username)
         return response
 
@@ -30,23 +28,12 @@ def comprar(request):
         venta.save()
         
         for item in carrito:
-            detalle_found = False
-            ventas_usuario = DetalleVenta.objects.filter(venta__cliente=request.user, producto__id=item["id"])
-            
-            for detalle in ventas_usuario:
-                if detalle.producto.id == item["id"]:
-                    detalle.cantidad += item["cantidad"]
-                    detalle.save()
-                    detalle_found = True
-                    break
-            
-            if not detalle_found:
-                detalle = DetalleVenta()
-                detalle.producto = Producto.objects.get(id=item["id"])
-                detalle.precio = item["precio"]
-                detalle.cantidad = item["cantidad"]
-                detalle.venta = venta
-                detalle.save()
+            detalle = DetalleVenta()
+            detalle.producto = Producto.objects.get(id=item["id"])
+            detalle.precio = item["precio"]
+            detalle.cantidad = item["cantidad"]
+            detalle.venta = venta
+            detalle.save()
 
         del request.session["carrito"]
         messages.success(request, 'Compra realizada correctamente')
@@ -54,26 +41,25 @@ def comprar(request):
     else:
         messages.success(request, 'Debe iniciar sesión para comprar productos')
         return redirect("login")
-
+    
 
 def comprarUnProducto(request, id):
     if request.user.is_authenticated:
+        messages.success(request, 'Compra realizada correctamente')
         producto = Producto.objects.get(id=id)        
         venta = Venta(cliente=request.user, total=producto.precio)
         venta.save()
-        
         detalle = DetalleVenta(producto=producto, precio=producto.precio, cantidad=1, venta=venta)
         detalle.save()
-        
-        messages.success(request, 'Compra realizada correctamente')
         return redirect(reverse('detalle', args=[id]))
     else:
-        messages.error(request, 'Debe iniciar sesión para comprar productos')
+        messages.success(request, 'Debe iniciar sesión para comprar productos')
         return redirect("login")
 
 def home(request):
     productos = Producto.objects.all()
-    return render(request, "index.html", {"productos": productos})
+    categorias = Tipo_producto.objects.all()
+    return render(request, "index.html", {"productos": productos, "categorias": categorias})
 
 
 def form(request):
@@ -82,7 +68,7 @@ def form(request):
 
 def carro(request):
     if request.user.is_authenticated:
-        uComprados = DetalleVenta.objects.filter(venta__cliente=request.user)
+        uComprados = DetalleVenta.objects.filter(venta__cliente=request.user).order_by("-venta__fecha")
         return render(request, "Carrito.html", {"uComprados": uComprados})
     else:
         uComprados = 'none'
@@ -99,7 +85,7 @@ def detalle(request, id):
 
 
 def logout(request):
-    messages.success(request, 'Sesión cerrada correctamente')
+    messages.success(request, 'Sesión cerrada')
     return logout_then_login(request, "login")
 
 
@@ -153,3 +139,14 @@ def registro(request):
     else:
         registro = Registro()
     return render(request, "registro.html", {"form": registro})
+
+def filtrado(request, id_categoria):
+    categoria = ''
+    if id_categoria == 1:
+        categoria = 'notes'
+    else:
+        categoria = 'smarts'
+    categorias = Tipo_producto.objects.all()
+    productos = Producto.objects.filter(id_tipo_producto_id=id_categoria)
+    
+    return render(request, f"{categoria}.html", {"productos": productos, "categorias": categorias})

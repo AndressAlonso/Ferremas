@@ -14,5 +14,6 @@ urlpatterns = [
     path('comprarUnProducto/<int:id>', comprarUnProducto, name="comprarUnProducto"),
     path('login', CustomLoginView.as_view(), name='login'),
     path('addToCar/<int:id>/<str:view>/<str:btn>/',addToCar,name="addToCar"),
-    path('delToCar/<int:id>/',delToCar,name="delToCar")
+    path('delToCar/<int:id>/',delToCar,name="delToCar"),
+    path('filtrado/<int:id_categoria>', filtrado, name="filtrado"),
 ]

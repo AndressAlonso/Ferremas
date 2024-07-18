@@ -23,21 +23,22 @@ class Producto (models.Model):
     id = models.AutoField(primary_key=True)
     id_marca = models.ForeignKey(to=Marca, on_delete=models.CASCADE)
     id_tipo_producto = models.ForeignKey(to=Tipo_producto,on_delete=models.CASCADE)
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=255)
     stock = models.IntegerField()
     imagen = models.CharField(max_length=255)
     precio = models.IntegerField()
-    
+    ram = models.CharField(max_length=80,default='')
+    procesador = models.CharField(max_length=80,default='')
+    almacenamiento = models.CharField(max_length=80,default='')
+    tamaño_pantalla = models.CharField(max_length=80,default='')
+    capacidad_bateria = models.CharField(max_length=80,default='')
+    color = models.CharField(max_length=80,default='')
     def __str__(self):
         return self.descripcion
 
 # class DetalleProducto(models.Model):
 #     id = models.AutoField(primary_key=True)
-#     producto = models.ForeignKey(to=Producto, on_delete=models.CASCADE)
-#     ram = models.CharField(max_length=50)
-#     procesador = models.CharField(max_length=50)
-#     almacenamiento = models.CharField(max_length=50)
-#     pantalla = models.CharField(max_length=50)
+#     
 
 class DetalleVenta(models.Model):
     id = models.AutoField(primary_key=True)

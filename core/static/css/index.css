@@ -5,15 +5,13 @@
 
 @media (prefers-reduced-motion: reduce) {
     .carousel-item {
-        transition: 1s all;
+        transition: 0.5s all;
     }
 }
 #carousel{
     min-height: 80vh;   
 }
-.carousel-item>a>img{
-    max-height: 560.807px;
-}
+
 #image-card {
     height: 30vh;
     background-size: contain;
@@ -37,7 +35,6 @@
     border-radius: 47px 0px 14px 16px;
     -moz-border-radius: 47px 0px 14px 16px;
     -webkit-border-radius: 47px 0px 14px 16px;
-    
 }
 
 #idCard{
@@ -54,9 +51,16 @@
 
 #cardMarca{
     font-size: small;
+
 }
+
 
 #cardDesc{
     font-size: small;
-    line-height: 1.5;
+    height: 78px;
+}
+
+
+#categorias{
+    font-size: small;
 }

@@ -1,6 +1,3 @@
-window.onload = () => {
-  GetIndicador();
-};
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -23,7 +20,7 @@ async function GetIndicador() {
         var precioConvertido = precioOriginal / valorx;
         let precio = document.getElementById("precioClp");
         let divisa = document.getElementById("divisa");
-        
+        console.log("fetch", datas)
 
         if (datas.codigo === "dolar") {
           divisa.textContent = "USD";
@@ -46,4 +43,32 @@ async function GetIndicador() {
   });
 
 
+}
+
+
+
+function MostrarMensaje(mensaje) {
+  var ElementoMensaje = document.createElement('div');
+  ElementoMensaje.id = 'mensaje';
+  ElementoMensaje.className = 'rounded-2 text-white bg-dark ';
+  ElementoMensaje.innerHTML = `
+      <span class="px-2 my-3 text-white"></span>
+  `;
+  ElementoMensaje.querySelector('span').innerText = mensaje;
+  document.body.appendChild(ElementoMensaje);
+  setTimeout(function() {
+      document.body.removeChild(ElementoMensaje);
+  }, 2000);
+}
+
+window.onload = function() {
+  var djangoMessages = document.querySelectorAll('#django-messages li');
+  djangoMessages.forEach(function(item) {
+      var message = item.getAttribute('data-message');
+      var tags = item.getAttribute('data-tags');
+      if (tags.includes('success')) {
+          MostrarMensaje(message);
+      }
+  });
+  GetIndicador();
 }

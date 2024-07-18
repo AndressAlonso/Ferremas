@@ -8,32 +8,6 @@
 {% block content %}
 <header>
 
-  <div id="carouselExampleIndicators" class="carousel slide py-4" data-bs-theme="dark">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner" id="c_inner">
-      <div class="carousel-item active">
-        <img src="https://static3.webx.pk/files/17888/Images/Banner_020123041328_465436.jpg" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://static3.webx.pk/files/17888/Images/Banner_020123041328_464390.jpg" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://static3.webx.pk/files/17888/Images/Banner_020123041329_465623.jpg" class="d-block w-100" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -66,14 +40,14 @@
 <main class="mb-5 d-flex flex-column gap-3">
   <div class="container">
     <div id="Recomendaciones-title"
-      class="border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
+      class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center my-3">
       <span class="fw-bold">Nuestros Productos</span>
     </div>
-    {% comment %} <div class="my-3 d-flex gap-3" id="categorias">
+    <div class="my-3 d-flex gap-3"  id="categorias">
       {% for categoria in categorias %}
         <a href="{% url 'filtrado' categoria.id_tipo_producto  %}" class="w-25 border-black border border-1 border-top-0 border-end-0 border-start-0 border-opacity-25 bg-white rounded-4 text-black container pt-3 pb-3 rounded-2 text-center">{{categoria.nombre}}</a>
       {% endfor %}
-    </div> {% endcomment %}
+    </div>
     <div id="cards_container" class="row row-cols-1 d-flex row-cols-md-2 row-cols-lg-3 g-4">
       {% for producto in productos %}
       <div id="card" class="col">
