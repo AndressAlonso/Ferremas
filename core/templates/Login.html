@@ -11,7 +11,7 @@
           <img src="{% static 'icons/1.png' %}" alt="" width="60" height="60" />
           <h4 class="fw-bold">Iniciar Sesion en TechTreasure</h4>
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p }}
         <button type="submit" class="btn btn-dark mt-1 bg-black">Iniciar Sesion</button>
         <div class="d-flex flex-wrap gap-2 m-1 justify-content-around align-items-center" id="linksCuenta">
           <a href="" class="w-50 link-body-emphasis text-decoration-none fw-light fs-6" >¿Olvidaste tu contraseña?</a>

@@ -5,15 +5,30 @@ from .forms import *
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
+
 
 class CustomLoginView(LoginView):
-    template_name = 'login.html'
-    next_page = 'home'  
+    template_name = "login.html"
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, 'Has Iniciado Sesión Como ' + self.request.user.username)
+        rol = self.request.user.perfilusuario.rol
+
+        messages.success(self.request, f"Has iniciado sesión como {rol}")
+
+        if rol == "ADMIN":
+            return redirect("panel_admin")
+        elif rol == "VENDEDOR":
+            return redirect("panel_vendedor")
+        elif rol == "BODEGUERO":
+            return redirect("panel_bodeguero")
+        elif rol == "CONTADOR":
+            return redirect("panel_contador")
+        elif rol == "CLIENTE":
+            return redirect("home")
         return response
+
 
 def comprar(request):
     if request.user.is_authenticated:
@@ -26,7 +41,7 @@ def comprar(request):
         venta.cliente = request.user
         venta.total = total
         venta.save()
-        
+
         for item in carrito:
             detalle = DetalleVenta()
             detalle.producto = Producto.objects.get(id=item["id"])
@@ -39,32 +54,37 @@ def comprar(request):
             detalle.save()
 
         del request.session["carrito"]
-        messages.success(request, 'Compra realizada correctamente')
-        return redirect(reverse('carro') + "#titleCarrito")
+        messages.success(request, "Compra realizada correctamente")
+        return redirect(reverse("carro") + "#titleCarrito")
     else:
-        messages.success(request, 'Debe iniciar sesión para comprar productos')
+        messages.success(request, "Debe iniciar sesión para comprar productos")
         return redirect("login")
-    
+
 
 def comprarUnProducto(request, id):
     if request.user.is_authenticated:
-        messages.success(request, 'Compra realizada correctamente')
-        producto = Producto.objects.get(id=id)        
+        messages.success(request, "Compra realizada correctamente")
+        producto = Producto.objects.get(id=id)
         venta = Venta(cliente=request.user, total=producto.precio)
         venta.save()
-        detalle = DetalleVenta(producto=producto, precio=producto.precio, cantidad=1, venta=venta)
+        detalle = DetalleVenta(
+            producto=producto, precio=producto.precio, cantidad=1, venta=venta
+        )
         detalle.save()
         producto.stock -= 1
         producto.save()
-        return redirect(reverse('detalle', args=[id]))
+        return redirect(reverse("detalle", args=[id]))
     else:
-        messages.success(request, 'Debes iniciar sesión para comprar productos')
+        messages.success(request, "Debes iniciar sesión para comprar productos")
         return redirect("login")
+
 
 def home(request):
     productos = Producto.objects.all()
     categorias = Tipo_producto.objects.all()
-    return render(request, "index.html", {"productos": productos, "categorias": categorias})
+    return render(
+        request, "index.html", {"productos": productos, "categorias": categorias}
+    )
 
 
 def form(request):
@@ -73,15 +93,26 @@ def form(request):
 
 def carro(request):
     if request.user.is_authenticated:
-        uComprados = DetalleVenta.objects.filter(venta__cliente=request.user).order_by("-venta__fecha")
+        uComprados = DetalleVenta.objects.filter(venta__cliente=request.user).order_by(
+            "-venta__fecha"
+        )
         return render(request, "Carrito.html", {"uComprados": uComprados})
     else:
-        uComprados = 'none'
+        uComprados = "none"
         return render(request, "Carrito.html")
 
 
+
 def registro(request):
-    return render(request, "registro.html")
+    if request.method == "POST":
+        form = Registro(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuario registrado correctamente. Inicia sesión para continuar.')
+            return redirect("login")
+    else:
+        form = Registro()
+    return render(request, "registro.html", {"form": form})
 
 
 def detalle(request, id):
@@ -90,7 +121,7 @@ def detalle(request, id):
 
 
 def logout(request):
-    messages.success(request, 'Has Cerrado Sesión')
+    messages.success(request, "Has Cerrado Sesión")
     return logout_then_login(request, "login")
 
 
@@ -105,7 +136,7 @@ def delToCar(request, id):
     else:
         carrito.remove(item)
     request.session["carrito"] = carrito
-    messages.success(request, 'Producto eliminado del carrito')
+    messages.success(request, "Producto eliminado del carrito")
     return redirect(reverse(carro) + "#titleCarrito")
 
 
@@ -130,7 +161,7 @@ def addToCar(request, id, view, btn):
         )
 
     request.session["carrito"] = carrito
-    messages.success(request, 'Producto añadido al carrito')
+    messages.success(request, "Producto añadido al carrito")
     return redirect(reverse(view) + "#" + btn)
 
 
@@ -139,19 +170,225 @@ def registro(request):
         registro = Registro(request.POST)
         if registro.is_valid():
             registro.save()
-            messages.success(request, 'Usuario registrado correctamente')
+            messages.success(request, "Usuario registrado correctamente")
             return redirect(to="login")
     else:
         registro = Registro()
     return render(request, "registro.html", {"form": registro})
 
+
 def filtrado(request, id_categoria):
-    categoria = ''
+    categoria = ""
     if id_categoria == 1:
-        categoria = 'notes'
+        categoria = "notes"
     else:
-        categoria = 'smarts'
+        categoria = "smarts"
     categorias = Tipo_producto.objects.all()
     productos = Producto.objects.filter(id_tipo_producto_id=id_categoria)
+
+    return render(
+        request, f"{categoria}.html", {"productos": productos, "categorias": categorias}
+    )
+
+
+@login_required
+def panel_admin(request):
+    return render(request, "panel_admin.html")
+
+
+@login_required
+def panel_vendedor(request):
+    return render(request, "panel_vendedor.html")
+
+
+@login_required
+def panel_bodeguero(request):
+    return render(request, "panel_bodeguero.html")
+
+
+@login_required
+def panel_contador(request):
+    return render(request, "panel_contador.html")
+
+
+@login_required
+def crear_pedido(request):
+    carrito = request.session.get("carrito", [])
     
-    return render(request, f"{categoria}.html", {"productos": productos, "categorias": categorias})
+    if not carrito:
+        messages.error(request, "Tu carrito está vacío.")
+        return redirect("carro")
+
+    pedido = Pedido.objects.create(cliente=request.user)  # estado = PENDIENTE por defecto
+
+    for item in carrito:
+        producto = Producto.objects.get(id=item["id"])
+        DetallePedido.objects.create(
+            pedido=pedido,
+            producto=producto,
+            cantidad=item["cantidad"],
+            precio_unitario=item["precio"]
+        )
+
+    del request.session["carrito"]
+    messages.success(request, "Pedido creado correctamente. Espera aprobación del vendedor.")
+    return redirect("mis_pedidos")
+
+from django.http import HttpResponseForbidden
+
+def panel_vendedor(request):
+    if not hasattr(request.user, 'perfilusuario') or request.user.perfilusuario.rol != 'VENDEDOR':
+        return HttpResponseForbidden("No tienes permiso para acceder a esta vista.")
+    
+    pedidos_pendientes = Pedido.objects.filter(estado='PENDIENTE').order_by('-fecha_creacion')
+    return render(request, 'panel_vendedor.html', {"pedidos": pedidos_pendientes})
+
+@login_required
+def aprobar_pedido(request, pedido_id):
+    if request.user.perfilusuario.rol != 'VENDEDOR':
+        return HttpResponseForbidden()
+
+    pedido = Pedido.objects.get(id=pedido_id)
+    pedido.estado = 'ACEPTADO'
+    pedido.save()
+    messages.success(request, f"Pedido #{pedido.id} aprobado.")
+    return redirect('panel_vendedor')
+
+@login_required
+def rechazar_pedido(request, pedido_id):
+    if request.user.perfilusuario.rol != 'VENDEDOR':
+        return HttpResponseForbidden()
+
+    pedido = Pedido.objects.get(id=pedido_id)
+    pedido.estado = 'RECHAZADO'
+    pedido.save()
+    messages.warning(request, f"Pedido #{pedido.id} rechazado.")
+    return redirect('panel_vendedor')
+
+
+@login_required
+def mis_pedidos(request):
+    if request.user.perfilusuario.rol != 'CLIENTE':
+        return HttpResponseForbidden("No tienes permiso para acceder a esta vista.")
+    
+    pedidos_aceptados = Pedido.objects.all()
+    return render(request, 'mis_pedidos.html', {'pedidos': pedidos_aceptados})
+
+@login_required
+def pagar_pedido(request, pedido_id):
+    pedido = Pedido.objects.get(id=pedido_id)
+    
+    if pedido.cliente != request.user or pedido.estado != 'ACEPTADO':
+        return HttpResponseForbidden("No puedes pagar este pedido.")
+
+    if request.method == 'POST':
+        metodo = request.POST.get('metodo_pago')
+        pedido.metodo_pago = metodo
+        pedido.estado = 'EN_ESPERA_PAGO'
+        pedido.save()
+        messages.success(request, f"Has seleccionado {metodo}. Espera confirmación del pago.")
+        return redirect('mis_pedidos')
+
+    return render(request, 'pagar_pedido.html', {'pedido': pedido})
+
+
+@login_required
+def panel_contador(request):
+    if not hasattr(request.user, 'perfilusuario') or request.user.perfilusuario.rol != 'CONTADOR':
+        return HttpResponseForbidden("No tienes permiso para acceder a esta vista.")
+    
+    pedidos_transferencia = Pedido.objects.filter(estado='EN_ESPERA_PAGO', metodo_pago='transferencia')
+    return render(request, 'panel_contador.html', {'pedidos': pedidos_transferencia})
+
+@login_required
+def confirmar_pago(request, pedido_id):
+    if not hasattr(request.user, 'perfilusuario') or request.user.perfilusuario.rol != 'CONTADOR':
+        return HttpResponseForbidden("No autorizado.")
+    
+    pedido = Pedido.objects.get(id=pedido_id)
+    
+    if pedido.estado == 'EN_ESPERA_PAGO' and pedido.metodo_pago == 'transferencia':
+        pedido.estado = 'PAGO_CONFIRMADO'
+        pedido.save()
+        messages.success(request, f"Pago del Pedido #{pedido.id} confirmado.")
+    else:
+        messages.error(request, "Este pedido no requiere confirmación manual.")
+    
+    return redirect('panel_contador')
+
+
+@login_required
+def elegir_entrega(request, pedido_id):
+    pedido = Pedido.objects.get(id=pedido_id)
+
+    # Verificación de acceso
+    if pedido.cliente != request.user:
+        return HttpResponseForbidden("No tienes permiso para acceder a este pedido.")
+
+    if pedido.estado != 'PAGO_CONFIRMADO':
+        messages.error(request, "Este pedido aún no está listo para elegir tipo de entrega.")
+        return redirect('mis_pedidos')
+
+    if request.method == 'POST':
+        tipo = request.POST.get('tipo_entrega')  # "retiro" o "despacho"
+        pedido.tipo_entrega = tipo
+        pedido.estado = 'LISTO_DESPACHO'
+        pedido.save()
+        messages.success(request, f"Has elegido '{tipo}' como método de entrega.")
+        return redirect('mis_pedidos')
+
+    return render(request, 'elegir_entrega.html', {'pedido': pedido})
+
+
+@login_required
+def panel_bodeguero(request):
+    if not hasattr(request.user, 'perfilusuario') or request.user.perfilusuario.rol != 'BODEGUERO':
+        return HttpResponseForbidden("No tienes permiso para acceder a esta vista.")
+
+    pedidos_listos = Pedido.objects.filter(estado='LISTO_DESPACHO')
+    return render(request, 'panel_bodeguero.html', {'pedidos': pedidos_listos})
+
+
+
+@login_required
+def marcar_entregado(request, pedido_id):
+    if request.user.perfilusuario.rol != 'BODEGUERO':
+        return HttpResponseForbidden()
+
+    pedido = Pedido.objects.get(id=pedido_id)
+
+    if pedido.estado != 'LISTO_DESPACHO':
+        messages.error(request, "Este pedido no está listo para entrega.")
+        return redirect('panel_bodeguero')
+
+    # 1. Marcar como entregado
+    pedido.estado = 'ENTREGADO'
+    pedido.save()
+
+    # 2. Generar la venta
+    venta = Venta.objects.create(cliente=pedido.cliente, total=0)
+    total = 0
+
+    for detalle in pedido.detalles.all():
+        DetalleVenta.objects.create(
+            venta=venta,
+            producto=detalle.producto,
+            cantidad=detalle.cantidad,
+            precio=detalle.precio_unitario
+        )
+
+        # Descontar stock
+        detalle.producto.stock -= detalle.cantidad
+        detalle.producto.save()
+
+        total += detalle.cantidad * detalle.precio_unitario
+
+    venta.total = total
+    venta.save()
+
+    # 3. Marcar como venta finalizada
+    pedido.estado = 'VENTA_FINALIZADA'
+    pedido.save()
+
+    messages.success(request, f"Pedido #{pedido.id} entregado y venta registrada.")
+    return redirect('panel_bodeguero')

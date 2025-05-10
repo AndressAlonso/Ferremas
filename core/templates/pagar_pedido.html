@@ -1,0 +1,16 @@
+{% extends 'plantilla.html' %}
+{% block content %}
+<h2>Pagar Pedido #{{ pedido.id }}</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <label for="metodo_pago">Selecciona método de pago:</label>
+  <select name="metodo_pago" id="metodo_pago" class="form-select" required>
+    <option value="">Seleccione...</option>
+    <option value="debito">Débito</option>
+    <option value="credito">Crédito</option>
+    <option value="transferencia">Transferencia</option>
+  </select>
+  <button type="submit" class="btn btn-success mt-3">Confirmar Pago</button>
+</form>
+{% endblock %}
