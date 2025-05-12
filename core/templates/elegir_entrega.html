@@ -1,15 +1,4 @@
 {% extends 'plantilla.html' %}
 {% block content %}
-<h2>Elegir Método de Entrega para Pedido #{{ pedido.id }}</h2>
 
-<form method="post">
-  {% csrf_token %}
-  <label for="tipo_entrega">Selecciona una opción:</label>
-  <select name="tipo_entrega" class="form-select" required>
-    <option value="">Seleccione...</option>
-    <option value="retiro">Retiro en tienda</option>
-    <option value="despacho">Despacho a domicilio</option>
-  </select>
-  <button type="submit" class="btn btn-primary mt-3">Confirmar Entrega</button>
-</form>
 {% endblock %}

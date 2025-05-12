@@ -41,13 +41,26 @@
               {% if user.is_authenticated %}
                 <span>Nombre: {{ user.first_name }} {{ user.last_name }}</span>
                 <span>Email: {{ user.email }}</span>
-                <span>Usuario: {{ user.username }}</span>
+                <span>{{ perfil }}</span>
                 <link rel="stylesheet" href="{% static 'css/logout.css' %}" />
               {% else %}
                 <span>Hola!</span>
               {% endif %}
             </div>
             <div class="modal-footer text-center d-flex text-black border-dark-subtle border-2 m-2">
+              {% if user.is_authenticated and user.perfilusuario %}
+                {% if user.perfilusuario.rol == 'ADMIN' %}
+                  <p>
+                    <a href="/admin" class="btn btn-outline-dark w-100">Panel de Administración</a>
+                  </p>
+              {% endif %}
+              <p>
+                    <a href="{% url 'panel_trabajador' %}" class="btn btn-outline-dark w-100">Gestion De Pedidos</a>
+                  </p>
+              {% else %}
+                <p>Debes iniciar sesión para ver estas opciones.</p>
+              {% endif %}
+
               <a href="{% url 'registro' %}" class="w-100 link-body-emphasis text-decoration-none" id="registroLink">¿No tienes cuenta? Regístrate</a>
               <a href="{% url 'login' %}" class="link-body-emphasis w-100 text-decoration-none" id="loginlink">¿Ya tienes una cuenta? Inicia Sesion!</a>
               <form action="{% url 'logout' %}" id="formLogout" method="post" class="w-100 text-decoration-none">
@@ -73,12 +86,12 @@
           <img src="{% static 'icons/brand.png' %}" alt="" width="40" /><div class="d-flex flex-column">
             <span>TechTreasure</span>
           </div>
-          
         </a>
-        <span class="mx-lg-3">{{user.username}}</span>
+        <span class="mx-lg-3">{{ user.first_name }} {{ user.last_name }}</span>
+        <span class="mx-lg-3">{{ perfil }}</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav d-flex flex-row gap-3 ms-auto"> 
+          <ul class="navbar-nav d-flex flex-row gap-3 ms-auto">
             <li class="nav-item" data-username="{{ user.username }}" id="cuentaNavItem">
               <a id="cuenta" class="nav-link text-decoration-none nav-link text-white d-flex gap-2 justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-current="page" style="cursor: pointer !important;">
                 <svg width="23" height="23" viewBox="0 0 20 20" focusable="false" aria-hidden="true" role="presentation">

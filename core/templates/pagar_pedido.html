@@ -1,16 +1,33 @@
 {% extends 'plantilla.html' %}
 {% block content %}
-<h2>Pagar Pedido #{{ pedido.id }}</h2>
+<h2>Pedido #{{ pedido.id }}</h2>
 
-<form method="post">
-  {% csrf_token %}
-  <label for="metodo_pago">Selecciona método de pago:</label>
-  <select name="metodo_pago" id="metodo_pago" class="form-select" required>
-    <option value="">Seleccione...</option>
-    <option value="debito">Débito</option>
-    <option value="credito">Crédito</option>
-    <option value="transferencia">Transferencia</option>
-  </select>
-  <button type="submit" class="btn btn-success mt-3">Confirmar Pago</button>
-</form>
+{% if pedido.estado == "ACEPTADO" %}
+  <form method="post">
+    {% csrf_token %}
+    <label for="tipo_entrega">Selecciona tipo de entrega:</label>
+    <select name="tipo_entrega" class="form-select" required>
+      <option value="">Seleccione...</option>
+      <option value="retiro">Retiro en tienda</option>
+      <option value="despacho">Despacho a domicilio</option>
+    </select>
+    <button type="submit" class="btn btn-primary mt-3">Confirmar Entrega</button>
+  </form>
+
+{% elif pedido.estado == "LISTO_PAGO" %}
+  <form method="post">
+    {% csrf_token %}
+    <label for="metodo_pago">Selecciona método de pago:</label>
+    <select name="metodo_pago" id="metodo_pago" class="form-select" required>
+      <option value="">Seleccione...</option>
+      <option value="debito">Débito</option>
+      <option value="credito">Crédito</option>
+      <option value="transferencia">Transferencia</option>
+    </select>
+    <button type="submit" class="btn btn-success mt-3">Confirmar Pago</button>
+  </form>
+
+{% else %}
+  <p class="alert alert-info">Este pedido no está disponible para acciones en este momento.</p>
+{% endif %}
 {% endblock %}

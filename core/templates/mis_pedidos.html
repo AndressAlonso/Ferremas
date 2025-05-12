@@ -1,26 +1,51 @@
 {% extends 'plantilla.html' %}
 {% block content %}
-  <h2>Pedidos Aprobados</h2>
+<div class="container py-4">
+  <span>Pedidos Aprobados</span>
 
   {% if pedidos %}
     <ul class="list-group">
       {% for pedido in pedidos %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Pedido #{{ pedido.id }} - Fecha: {{ pedido.fecha_creacion }}
+        <li class="list-group-item d-flex flex-column gap-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>Pedido #{{ pedido.id }}</strong>
+            <span class="text-muted">{{ pedido.fecha_creacion }}</span>
+          </div>
 
-          {% if pedido.estado == 'APROBADO' %}
-                    <a href="{% url 'pagar_pedido' pedido.id %}" class="btn btn-primary btn-sm">Pagar</a>
+          {% if pedido.estado == 'ACEPTADO' %}
+            <a href="{% url 'pagar_pedido' pedido.id %}" class="btn btn-primary btn-sm w-25">Pagar</a>
           {% endif %}
-          {% if pedido.estado == 'PAGO_CONFIRMADO' %}
-            <a href="{% url 'elegir_entrega' pedido.id %}" class="btn btn-warning btn-sm">Elegir Entrega</a>
-          {% endif %}
-        </li>
-        <li>
-          <span>{{pedido.estado}}</span>
+
+          <div>
+            <strong>Estado:</strong> {{ pedido.get_estado_display }}
+            <br>
+            <small class="text-secondary">
+              {% if pedido.estado == 'PENDIENTE' %}
+                Estamos esperando que el vendedor revise y apruebe tu pedido.
+              {% elif pedido.estado == 'RECHAZADO' %}
+                Este pedido fue rechazado por el vendedor.
+              {% elif pedido.estado == 'ACEPTADO' %}
+                Tu pedido fue aprobado. Ahora puedes proceder a elegir entrega y pagar.
+              {% elif pedido.estado == 'EN_ESPERA_PAGO' %}
+                Hemos recibido tu solicitud. Esperamos el pago o su confirmación.
+              {% elif pedido.estado == 'PAGO_CONFIRMADO' %}
+                El contador ha verificado tu pago. Pronto se preparará tu pedido.
+              {% elif pedido.estado == 'LISTO_DESPACHO' %}
+                El pedido fue confirmado y está listo para ser preparado.
+              {% elif pedido.estado == 'ENTREGADO' %}
+                El bodeguero entregó el pedido. Gracias por tu compra.
+              {% elif pedido.estado == 'VENTA_FINALIZADA' %}
+                Tu pedido ha sido completado exitosamente.
+              {% else %}
+                Estado desconocido.
+              {% endif %}
+            </small>
+          </div>
         </li>
       {% endfor %}
     </ul>
   {% else %}
     <p>No tienes pedidos aprobados pendientes de pago.</p>
   {% endif %}
+</div>
 {% endblock %}
