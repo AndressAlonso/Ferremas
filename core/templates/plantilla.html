@@ -59,6 +59,11 @@
                     <a href="{% url 'panel_trabajador' %}" class="btn btn-outline-dark w-100">Gestion De Pedidos</a>
                   </p>
                   {% endif %}
+                  {% if user.perfilusuario.rol == "CLIENTE" %}
+                    <p>
+                      <a href="{% url 'perfil' %}" class="btn btn-outline-dark w-100">Mi Perfil</a>
+                    </p>
+                  {% endif %}
               {% else %}
                 <p>Debes iniciar sesión para ver estas opciones.</p>
               {% endif %}
