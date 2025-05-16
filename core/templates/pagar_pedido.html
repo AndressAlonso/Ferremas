@@ -3,31 +3,97 @@
 <h2>Pedido #{{ pedido.id }}</h2>
 
 {% if pedido.estado == "ACEPTADO" %}
-  <form method="post">
-    {% csrf_token %}
-    <label for="tipo_entrega">Selecciona tipo de entrega:</label>
-    <select name="tipo_entrega" class="form-select" required>
-      <option value="">Seleccione...</option>
-      <option value="retiro">Retiro en tienda</option>
-      <option value="despacho">Despacho a domicilio</option>
-    </select>
-    <button type="submit" class="btn btn-primary mt-3">Confirmar Entrega</button>
-  </form>
+<form method="post">
+  {% csrf_token %}
+  <label for="tipo_entrega">Selecciona tipo de entrega:</label>
+  <select name="tipo_entrega" id="tipo_entrega" class="form-select" required onchange="mostrarDireccion()">
+    <option value="">Seleccione...</option>
+    <option value="retiro">Retiro en tienda</option>
+    <option value="despacho">Despacho a domicilio</option>
+  </select>
+
+  <div id="infoDireccion" class="my-3 d-none">
+    <h5>Dirección:</h5>
+    <p id="textoDireccion" class="fw-bold text-primary"></p>
+    <div id="map" style="height: 400px;"></div>
+  </div>
+  <input type="hidden" name="latitud" id="latitud">
+  <input type="hidden" name="longitud" id="longitud">
+  <button type="submit" class="btn btn-primary mt-3">Confirmar Entrega</button>
+</form>
+
+
 
 {% elif pedido.estado == "LISTO_PAGO" %}
-  <form method="post">
-    {% csrf_token %}
-    <label for="metodo_pago">Selecciona método de pago:</label>
-    <select name="metodo_pago" id="metodo_pago" class="form-select" required>
-      <option value="">Seleccione...</option>
-      <option value="debito">Débito</option>
-      <option value="credito">Crédito</option>
-      <option value="transferencia">Transferencia</option>
-    </select>
-    <button type="submit" class="btn btn-success mt-3">Confirmar Pago</button>
-  </form>
+<form method="post">
+  {% csrf_token %}
+  <label for="metodo_pago">Selecciona método de pago:</label>
+  <select name="metodo_pago" id="metodo_pago" class="form-select" required>
+    <option value="">Seleccione...</option>
+    <option value="debito">Débito</option>
+    <option value="credito">Crédito</option>
+    <option value="transferencia">Transferencia</option>
+  </select>
+  <button type="submit" class="btn btn-success mt-3">Confirmar Pago</button>
+</form>
 
 {% else %}
-  <p class="alert alert-info">Este pedido no está disponible para acciones en este momento.</p>
+<p class="alert alert-info">Este pedido no está disponible para acciones en este momento.</p>
 {% endif %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3fEtB6sb6u13ctBJtd7NxeA8K7R4dSb8"></script>
+<script>
+  const direccionCliente = {
+    texto: "{{ perfil.direccion|escapejs }}",
+    lat: parseFloat("{{ perfil.latitud|default:0|stringformat:'f' }}".replace(',', '.')),
+    lng: parseFloat("{{ perfil.longitud|default:0|stringformat:'f' }}".replace(',', '.'))
+  };
+
+  const direccionTienda = {
+    texto: "{{ direccion_tienda.texto|escapejs }}",
+    lat: parseFloat("{{ direccion_tienda.lat }}"),
+    lng: parseFloat("{{ direccion_tienda.lng }}")
+  };
+
+  let map, marker;
+
+  function mostrarDireccion() {
+    const tipo = document.getElementById('tipo_entrega').value;
+    const infoDiv = document.getElementById('infoDireccion');
+    const texto = document.getElementById('textoDireccion');
+    const latInput = document.getElementById('latitud');
+    const lngInput = document.getElementById('longitud');
+
+    if (!tipo) {
+      infoDiv.classList.add('d-none');
+      return;
+    }
+
+    let datos = tipo === 'despacho' ? direccionCliente : direccionTienda;
+
+    texto.textContent = datos.texto;
+    infoDiv.classList.remove('d-none');
+
+    // Actualiza hidden inputs
+    latInput.value = datos.lat;
+    lngInput.value = datos.lng;
+
+    // Inicia o actualiza mapa
+    const location = { lat: datos.lat, lng: datos.lng };
+    if (!map) {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: location,
+        zoom: 15,
+      });
+      marker = new google.maps.Marker({
+        map: map,
+        position: location
+      });
+    } else {
+      map.setCenter(location);
+      marker.setPosition(location);
+    }
+  }
+</script>
+
 {% endblock %}

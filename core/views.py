@@ -260,21 +260,25 @@ def rechazar_pedido(request, pedido_id):
 def mis_pedidos(request):
     if request.user.perfilusuario.rol != "CLIENTE":
         return HttpResponseForbidden("No tienes permiso para acceder a esta vista.")
-    pedidos_aceptados = Pedido.objects.filter(cliente=request.user).order_by(
-        "-fecha_creacion"
-    )
-    return render(request, "mis_pedidos.html", {"pedidos": pedidos_aceptados})
+    pedidos = Pedido.objects.filter(cliente=request.user).prefetch_related('detalles__producto')
+
+    return render(request, "mis_pedidos.html", {"pedidos": pedidos})
 
 
 @login_required
 def pagar_pedido(request, pedido_id):
     pedido = Pedido.objects.get(id=pedido_id)
+    perfil = PerfilUsuario.objects.get(user=request.user)
+    direccion_tienda = {
+        'texto': 'Duoc UC: Sede Melipilla - Serrano, Melipilla, Chile',
+        'lat': '-33.6942128',
+        'lng': '-71.2136897'
+    }
 
     if pedido.cliente != request.user:
         return HttpResponseForbidden("No tienes permiso para acceder a este pedido.")
 
     if request.method == "POST":
-        # Paso 1: elegir tipo de entrega si estado == ACEPATADO
         if pedido.estado == "ACEPTADO":
             tipo = request.POST.get("tipo_entrega")
             if tipo:
@@ -287,19 +291,15 @@ def pagar_pedido(request, pedido_id):
                 )
                 return redirect("pagar_pedido", pedido_id=pedido.id)
 
-        # Paso 2: elegir método de pago si ya se eligió tipo de entrega
         elif pedido.estado == "LISTO_PAGO":
             metodo = request.POST.get("metodo_pago")
             if metodo:
                 pedido.metodo_pago = metodo
                 pedido.estado = "EN_ESPERA_PAGO"
                 pedido.save()
-                messages.success(
-                    request, f"Has seleccionado {metodo}. Espera confirmación del pago."
-                )
+                messages.success(request, f"Has seleccionado {metodo}. Espera confirmación del pago.")
                 return redirect("mis_pedidos")
-
-    return render(request, "pagar_pedido.html", {"pedido": pedido})
+    return render(request, "pagar_pedido.html", {"pedido": pedido, "perfil": perfil, "direccion_tienda": direccion_tienda})
 
 
 @login_required
@@ -391,6 +391,7 @@ def panel_trabajador(request):
         },
     )
 
+@login_required
 def perfil_usuario(request):
     perfil = PerfilUsuario.objects.get(user=request.user)
 

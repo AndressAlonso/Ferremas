@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/font.css' %}" />
     <link rel="Web Icon" href="{% static 'icons/brand.png' %}" />
     <script src="{% static 'js/mensaje.js' %}"></script>
+    
     {% block links %}
 
     {% endblock %}
@@ -61,6 +62,9 @@
                   {% endif %}
                     <p>
                       <a href="{% url 'perfil_usuario' %}" class="btn btn-outline-dark w-100">Mi Perfil</a>
+                    </p>
+                     <p>
+                      <a href="{% url 'mis_pedidos' %}" class="btn btn-outline-dark w-100">Mis Pedidos</a>
                     </p>
               {% else %}
                 <p>Debes iniciar sesión para ver estas opciones.</p>
