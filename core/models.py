@@ -12,12 +12,14 @@ class PerfilUsuario(models.Model):
         ('CONTADOR', 'Contador'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    latitud = models.FloatField(blank=True, null=True)
+    longitud = models.FloatField(blank=True, null=True)
     rol = models.CharField(max_length=20, choices=ROLES)
-
+    direccion = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return f'{self.user.username} - {self.get_rol_display()}'
 
-# models.py
+
 
 class Pedido(models.Model):
     ESTADOS = [

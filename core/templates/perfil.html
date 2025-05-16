@@ -1,0 +1,95 @@
+{% extends 'plantilla.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2>Mi Perfil</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label>Nombre:</label>
+      <input type="text" class="form-control" value="{{ user.get_full_name }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label>Correo:</label>
+      <input type="email" class="form-control" value="{{ user.email }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label for="autocomplete">Dirección:</label>
+      <input id="autocomplete" name="direccion" class="form-control" placeholder="Buscar dirección..." required value="{{ perfil.direccion|default:'' }}">
+      <input type="hidden" name="latitud" id="latitud" value="{{ perfil.latitud }}">
+      <input type="hidden" name="longitud" id="longitud" value="{{ perfil.longitud }}">
+    </div>
+
+    <div id="map" style="height: 400px;" class="my-3"></div>
+
+<button id="guardarBtn" type="submit" class="btn btn-primary disabled" disabled >Guardar Dirección</button>
+  </form>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3fEtB6sb6u13ctBJtd7NxeA8K7R4dSb8&libraries=places"></script>
+<script>
+  let map, marker, autocomplete, direccionValida = false;
+
+  function initAutocomplete() {
+    const input = document.getElementById('autocomplete');
+    autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.addListener('place_changed', onPlaceChanged);
+
+    const latInput = document.getElementById('latitud');
+    const lngInput = document.getElementById('longitud');
+    const guardarBtn = document.getElementById('guardarBtn');
+
+    const initialLat = parseFloat(latInput.value.replace(',', '.')) || -33.4489;
+    const initialLng = parseFloat(lngInput.value.replace(',', '.')) || -70.6693;
+
+    const initialPosition = { lat: initialLat, lng: initialLng };
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: initialPosition,
+      zoom: 15,
+    });
+
+    marker = new google.maps.Marker({
+      map: map,
+      position: initialPosition
+    });
+
+    if (latInput.value && lngInput.value) {
+      direccionValida = true;
+      guardarBtn.disabled = false;
+    }
+
+    input.addEventListener('input', function () {
+      direccionValida = false;
+      guardarBtn.disabled = true;
+    });
+  }
+
+  function onPlaceChanged() {
+    const place = autocomplete.getPlace();
+    if (!place.geometry) return;
+
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+
+    document.getElementById('latitud').value = lat;
+    document.getElementById('longitud').value = lng;
+
+    marker.setPosition(place.geometry.location);
+    map.setCenter(place.geometry.location);
+
+    direccionValida = true;
+    document.getElementById('guardarBtn').disabled = false;
+    document.getElementById('guardarBtn').classList.remove('disabled');
+  }
+
+  window.initAutocomplete = initAutocomplete;
+</script>
+
+<script>
+  google.maps.event.addDomListener(window, 'load', initAutocomplete);
+</script>
+{% endblock %}

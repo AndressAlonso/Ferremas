@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.views import logout_then_login
@@ -18,13 +19,13 @@ class CustomLoginView(LoginView):
         messages.success(self.request, f"Has iniciado sesión como {rol}")
 
         if rol == "ADMIN":
-            return redirect("panel_admin")
+            return redirect("home")
         elif rol == "VENDEDOR":
-            return redirect("panel_vendedor")
+            return redirect("home")
         elif rol == "BODEGUERO":
-            return redirect("panel_bodeguero")
+            return redirect("home")
         elif rol == "CONTADOR":
-            return redirect("panel_contador")
+            return redirect("home")
         elif rol == "CLIENTE":
             return redirect("home")
         return response
@@ -389,3 +390,23 @@ def panel_trabajador(request):
             "pedidos_pendientes": pedidos_pendientes,
         },
     )
+
+def perfil_usuario(request):
+    perfil = PerfilUsuario.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        direccion = request.POST.get('direccion', '').strip()
+        direccion = re.sub(' +', ' ', direccion)
+
+        lat = request.POST.get('latitud', '').replace(',', '.')
+        lng = request.POST.get('longitud', '').replace(',', '.')
+
+        perfil.direccion = direccion
+        perfil.latitud = float(lat) if lat else None
+        perfil.longitud = float(lng) if lng else None
+        perfil.save()
+
+        messages.success(request, "Dirección guardada correctamente.")
+        return redirect('perfil_usuario')
+
+    return render(request, 'perfil.html', {'perfil': perfil})

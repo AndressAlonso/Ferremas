@@ -54,9 +54,11 @@
                     <a href="/admin" class="btn btn-outline-dark w-100">Panel de Administración</a>
                   </p>
               {% endif %}
-              <p>
+                  {% if user.perfilusuario.rol == "VENDEDOR" or user.perfilusuario.rol == "CONTADOR" or user.perfilusuario.rol == "BODEGUERO" or user.perfilusuario.rol == "ADMIN" %}
+                   <p>
                     <a href="{% url 'panel_trabajador' %}" class="btn btn-outline-dark w-100">Gestion De Pedidos</a>
                   </p>
+                  {% endif %}
               {% else %}
                 <p>Debes iniciar sesión para ver estas opciones.</p>
               {% endif %}

@@ -25,4 +25,5 @@ urlpatterns = [
     ),
     path("pedido/<int:pedido_id>/entregar/", marcar_entregado, name="marcar_entregado"),
     path("trabajador/", panel_trabajador, name="panel_trabajador"),
+    path("perfil/", perfil_usuario, name="perfil_usuario"),
 ]
