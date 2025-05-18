@@ -1,5 +1,6 @@
 import re
 from django.shortcuts import render, redirect
+import requests
 from .models import *
 from django.contrib.auth.views import logout_then_login
 from .forms import *
@@ -301,7 +302,7 @@ def pagar_pedido(request, pedido_id):
                 return redirect("mis_pedidos")
     return render(request, "pagar_pedido.html", {"pedido": pedido, "perfil": perfil, "direccion_tienda": direccion_tienda})
 
-
+ 
 @login_required
 def confirmar_pago(request, pedido_id):
     if (
@@ -367,6 +368,7 @@ def marcar_entregado(request, pedido_id):
 
 @login_required
 def panel_trabajador(request):
+
     if request.user.perfilusuario.rol not in [
         "ADMIN",
         "VENDEDOR",
@@ -381,6 +383,8 @@ def panel_trabajador(request):
     pedidos_pendientes = Pedido.objects.filter(estado="PENDIENTE").order_by(
         "-fecha_creacion"
     )
+    trabajadores = PerfilUsuario.objects.filter(rol__in=['VENDEDOR', 'BODEGUERO', 'CONTADOR', 'ADMIN'])
+    print(trabajadores)
     return render(
         request,
         "panelTrabajador.html",
@@ -388,6 +392,7 @@ def panel_trabajador(request):
             "pedidos": pedidos_listos,
             "pedidos_transferencia": pedidos_transferencia,
             "pedidos_pendientes": pedidos_pendientes,
+            "trabajadores": trabajadores,
         },
     )
 
@@ -411,3 +416,36 @@ def perfil_usuario(request):
         return redirect('perfil_usuario')
 
     return render(request, 'perfil.html', {'perfil': perfil})
+
+def enviar_mensaje_template(numero, nombre, numero_pedido, estado):
+    print("Enviando mensaje a WhatsApp...")
+    token = 'EAATgeRTv5uoBO9aZBE7BFyatNPykZAxql6BrCGZCSVzQY9zC1kwXNA5exwFCjZCSCV4MH2vsEZBHGPPZBMUUfkFVa49XCfBtW7ZBzPsuCZC8wluOrgz842qnUF0y8IxaI9FZCCya2oYcdu5KLNm8gyZBFsTKZCopJ6FmFtQPzWco7V1sNGX54WMZATRJfvMeCfDFCHj2n9vAf7GOYdSBUIQtTJJ7eUVVTHIZD'
+    numero_id = '605415412662823'
+
+    url = f'https://graph.facebook.com/v18.0/{numero_id}/messages'
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "messaging_product": "whatsapp",
+        "to": numero,
+        "type": "template",
+        "template": {
+            "name": "cambio_estado_pedido",
+            "language": { "code": "es_CL" },
+            "components": [{
+                "type": "body",
+                "parameters": [
+                    {"type": "text", "text": nombre},
+                    {"type": "text", "text": str(numero_pedido)},
+                    {"type": "text", "text": estado}
+                ]
+            }]
+        }
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+    print("Response status code:", response.status_code)
+    print("Response body:", response.json())
+    return response.status_code, response.json()

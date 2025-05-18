@@ -1,149 +1,196 @@
 {% extends 'plantilla.html' %}
 {% block content %}
-<div id="container" class="container w-100 py-4">
-  <h2 class="mb-4">Panel de Gestión de Pedidos</h2>
+  <div class="modal fade" id="modalTrabajadores" tabindex="-1" aria-labelledby="modalTrabajadoresLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTrabajadoresLabel">Trabajadores Disponibles</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Rol</th>
+                  <th>Teléfono</th>
+                  <th>WhatsApp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for t in trabajadores %}
+                  <tr>
+                    <td>{{ t.user.first_name }} {{ t.user.last_name }}</td>
+                    <td>{{ t.get_rol_display }}</td>
+                    <td>{{ t.telefono|default:'No registrado' }}</td>
+                    <td>
+                      {% if t.telefono %}
+                        <a href="https://wa.me/56{{ t.telefono|cut:' ' }}" target="_blank" class="btn btn-success btn-sm">Chatear</a>
+                      {% else %}
+                        <span class="text-muted">Sin número</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="container" class="container w-100 py-4">
+    <h2 class="mb-4">Panel de Gestión de Pedidos</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTrabajadores">Ver Trabajadores y WhatsApp</button>
 
-  {% if perfil.rol == "VENDEDOR" or perfil.rol == "ADMIN" %}
-    <h3 class="mb-3">Pedidos Pendientes (Vendedor)</h3>
-    {% if pedidos_pendientes %}
-      <table class="table ">
-        <thead class="table-light">
-          <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for pedido in pedidos_pendientes %}
+    {% if perfil.rol == 'VENDEDOR' or perfil.rol == 'ADMIN' %}
+      <h3 class="mb-3">Pedidos Pendientes (Vendedor)</h3>
+      {% if pedidos_pendientes %}
+        <table class="table">
+          <thead class="table-light">
             <tr>
-              <td>{{ pedido.id }}</td>
-              <td>{{ pedido.cliente.username }}</td>
-              <td>{{ pedido.fecha_creacion }}</td>
-              <td>{{ pedido.get_estado_display }}</td>
-              <td>
-                {% if pedido.estado == 'PENDIENTE' %}
-                  Esperando aprobación del vendedor.
-                {% elif pedido.estado == 'RECHAZADO' %}
-                  Rechazado por el vendedor.
-                {% elif pedido.estado == 'ACEPTADO' %}
-                  Aprobado por el vendedor. Esperando entrega/pago.
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-              <td>
-                <a href="{% url 'aprobar_pedido' pedido.id %}" class="btn btn-success btn-sm">Aprobar</a>
-                <a href="{% url 'rechazar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Rechazar</a>
-              </td>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Telefono Cliente</th>
+              <th>Acciones</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>No hay pedidos pendientes.</p>
+          </thead>
+          <tbody>
+            {% for pedido in pedidos_pendientes %}
+              <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.cliente.username }}</td>
+                <td>{{ pedido.fecha_creacion }}</td>
+                <td>{{ pedido.get_estado_display }}</td>
+                <td>
+                  {% if pedido.estado == 'PENDIENTE' %}
+                    Esperando aprobación del vendedor.
+                  {% elif pedido.estado == 'RECHAZADO' %}
+                    Rechazado por el vendedor.
+                  {% elif pedido.estado == 'ACEPTADO' %}
+                    Aprobado por el vendedor. Esperando entrega/pago.
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if pedido.cliente.perfilusuario.telefono %}
+                    <a href="https://wa.me/{{ pedido.cliente.perfilusuario.telefono }}?text=Hola%20{{ pedido.cliente.first_name }},%20tu%20pedido%20N°{{ pedido.id }}%20está%20en%20proceso." class="btn btn-outline-success btn-sm" target="_blank">WhatsApp</a>
+                  {% else %}
+                    No disponible
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'aprobar_pedido' pedido.id %}" class="btn btn-success btn-sm">Aprobar</a>
+                  <a href="{% url 'rechazar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Rechazar</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No hay pedidos pendientes.</p>
+      {% endif %}
+    {% elif perfil.rol != 'ADMIN' %}
+      <p class="text-muted">No tienes acceso al panel del Vendedor.</p>
     {% endif %}
-  {% elif perfil.rol != "ADMIN" %}
-    <p class="text-muted">No tienes acceso al panel del Vendedor.</p>
-  {% endif %}
 
-  <hr>
+    <hr />
 
-  <!-- Panel del Contador -->
-  {% if perfil.rol == "CONTADOR" or perfil.rol == "ADMIN" %}
-    <h3 class="mb-3">Confirmar Pagos por Transferencia (Contador)</h3>
-    {% if pedidos_transferencia %}
-      <table class="table ">
-        <thead class="table-light">
-          <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Fecha</th>
-            <th>Método</th>
-            <th>Estado</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for pedido in pedidos_transferencia %}
+    <!-- Panel del Contador -->
+    {% if perfil.rol == 'CONTADOR' or perfil.rol == 'ADMIN' %}
+      <h3 class="mb-3">Confirmar Pagos por Transferencia (Contador)</h3>
+      {% if pedidos_transferencia %}
+        <table class="table">
+          <thead class="table-light">
             <tr>
-              <td>{{ pedido.id }}</td>
-              <td>{{ pedido.cliente.username }}</td>
-              <td>{{ pedido.fecha_creacion }}</td>
-              <td>{{ pedido.metodo_pago }}</td>
-              <td>{{ pedido.get_estado_display }}</td>
-              <td>
-                {% if pedido.estado == 'EN_ESPERA_PAGO' %}
-                  En espera de confirmación por transferencia.
-                {% elif pedido.estado == 'PAGO_CONFIRMADO' %}
-                  Pago ya confirmado.
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-              <td>
-                <a href="{% url 'confirmar_pago' pedido.id %}" class="btn btn-success btn-sm">Confirmar Pago</a>
-              </td>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Método</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>No hay pagos pendientes por transferencia.</p>
+          </thead>
+          <tbody>
+            {% for pedido in pedidos_transferencia %}
+              <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.cliente.username }}</td>
+                <td>{{ pedido.fecha_creacion }}</td>
+                <td>{{ pedido.metodo_pago }}</td>
+                <td>{{ pedido.get_estado_display }}</td>
+                <td>
+                  {% if pedido.estado == 'EN_ESPERA_PAGO' %}
+                    En espera de confirmación por transferencia.
+                  {% elif pedido.estado == 'PAGO_CONFIRMADO' %}
+                    Pago ya confirmado.
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'confirmar_pago' pedido.id %}" class="btn btn-success btn-sm">Confirmar Pago</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No hay pagos pendientes por transferencia.</p>
+      {% endif %}
+    {% elif perfil.rol != 'ADMIN' %}
+      <p class="text-muted">No tienes acceso al panel del Contador.</p>
     {% endif %}
-  {% elif perfil.rol != "ADMIN" %}
-    <p class="text-muted">No tienes acceso al panel del Contador.</p>
-  {% endif %}
 
-  <hr>
+    <hr />
 
-  <!-- Panel del Bodeguero -->
-  {% if perfil.rol == "BODEGUERO" or perfil.rol == "ADMIN" %}
-    <h3 class="mb-3">Pedidos Listos para Entrega (Bodeguero)</h3>
-    {% if pedidos %}
-      <table class="table ">
-        <thead class="table-light">
-          <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Entrega</th>
-            <th>Estado</th>
-            <th>Descripción</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for pedido in pedidos %}
+    <!-- Panel del Bodeguero -->
+    {% if perfil.rol == 'BODEGUERO' or perfil.rol == 'ADMIN' %}
+      <h3 class="mb-3">Pedidos Listos para Entrega (Bodeguero)</h3>
+      {% if pedidos %}
+        <table class="table">
+          <thead class="table-light">
             <tr>
-              <td>{{ pedido.id }}</td>
-              <td>{{ pedido.cliente.username }}</td>
-              <td>{{ pedido.tipo_entrega }}</td>
-              <td>{{ pedido.get_estado_display }}</td>
-              <td>
-                {% if pedido.estado == 'PAGO_CONFIRMADO' %}
-                  Pago confirmado, preparando entrega.
-                {% elif pedido.estado == 'LISTO_DESPACHO' %}
-                  Cliente eligió método de entrega, listo para despachar.
-                {% elif pedido.estado == 'ENTREGADO' %}
-                  Ya entregado.
-                {% endif %}
-              </td>
-              <td>
-                <a href="{% url 'marcar_entregado' pedido.id %}" class="btn btn-success btn-sm">Marcar como Entregado</a>
-              </td>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Entrega</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Acción</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>No hay pedidos listos para entrega.</p>
+          </thead>
+          <tbody>
+            {% for pedido in pedidos %}
+              <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.cliente.username }}</td>
+                <td>{{ pedido.tipo_entrega }}</td>
+                <td>{{ pedido.get_estado_display }}</td>
+                <td>
+                  {% if pedido.estado == 'PAGO_CONFIRMADO' %}
+                    Pago confirmado, preparando entrega.
+                  {% elif pedido.estado == 'LISTO_DESPACHO' %}
+                    Cliente eligió método de entrega, listo para despachar.
+                  {% elif pedido.estado == 'ENTREGADO' %}
+                    Ya entregado.
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'marcar_entregado' pedido.id %}" class="btn btn-success btn-sm">Marcar como Entregado</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No hay pedidos listos para entrega.</p>
+      {% endif %}
+    {% elif perfil.rol != 'ADMIN' %}
+      <p class="text-muted">No tienes acceso al panel del Bodeguero.</p>
     {% endif %}
-  {% elif perfil.rol != "ADMIN" %}
-    <p class="text-muted">No tienes acceso al panel del Bodeguero.</p>
-  {% endif %}
-</div>
+  </div>
 {% endblock %}

@@ -15,6 +15,7 @@ class PerfilUsuario(models.Model):
     latitud = models.FloatField(blank=True, null=True)
     longitud = models.FloatField(blank=True, null=True)
     rol = models.CharField(max_length=20, choices=ROLES)
+    telefono = models.CharField(max_length=20, null=True, blank=True)
     direccion = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return f'{self.user.username} - {self.get_rol_display()}'
