@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.decorators import login_required
 
 class PerfilUsuario(models.Model):
     ROLES = [

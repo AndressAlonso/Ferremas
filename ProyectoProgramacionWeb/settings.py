@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "django.contrib.humanize",
+    "paypal.standard.ipn",
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+PAYPAL_RECEIVER_EMAIL = 'sb-n8i3r42348940@business.example.com' # where cash is paid into
+PAYPAL_TEST = True
+
+PAYPAL_BUY_BUTTON_IMAGE = 'https://res.cloudinary.com/the-proton-guy/image/upload/v1685882223/paypal-PhotoRoom_v9pay7.png'

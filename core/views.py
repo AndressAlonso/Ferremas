@@ -265,43 +265,6 @@ def mis_pedidos(request):
 
     return render(request, "mis_pedidos.html", {"pedidos": pedidos})
 
-
-@login_required
-def pagar_pedido(request, pedido_id):
-    pedido = Pedido.objects.get(id=pedido_id)
-    perfil = PerfilUsuario.objects.get(user=request.user)
-    direccion_tienda = {
-        'texto': 'Duoc UC: Sede Melipilla - Serrano, Melipilla, Chile',
-        'lat': '-33.6942128',
-        'lng': '-71.2136897'
-    }
-
-    if pedido.cliente != request.user:
-        return HttpResponseForbidden("No tienes permiso para acceder a este pedido.")
-
-    if request.method == "POST":
-        if pedido.estado == "ACEPTADO":
-            tipo = request.POST.get("tipo_entrega")
-            if tipo:
-                pedido.tipo_entrega = tipo
-                pedido.estado = "LISTO_PAGO"
-                pedido.save()
-                messages.success(
-                    request,
-                    f"Has seleccionado entrega por '{tipo}'. Ahora procede al pago.",
-                )
-                return redirect("pagar_pedido", pedido_id=pedido.id)
-
-        elif pedido.estado == "LISTO_PAGO":
-            metodo = request.POST.get("metodo_pago")
-            if metodo:
-                pedido.metodo_pago = metodo
-                pedido.estado = "EN_ESPERA_PAGO"
-                pedido.save()
-                messages.success(request, f"Has seleccionado {metodo}. Espera confirmación del pago.")
-                return redirect("mis_pedidos")
-    return render(request, "pagar_pedido.html", {"pedido": pedido, "perfil": perfil, "direccion_tienda": direccion_tienda})
-
  
 @login_required
 def confirmar_pago(request, pedido_id):

@@ -1,6 +1,7 @@
 from .views import *
 from django.urls import path
 from .views import CustomLoginView
+from PaymentApp.views import Checkout, PaymentSuccessful, paymentFailed
 
 urlpatterns = [
     path("", home, name="home"),
@@ -19,7 +20,7 @@ urlpatterns = [
     path("pedido/<int:pedido_id>/aprobar/", aprobar_pedido, name="aprobar_pedido"),
     path("pedido/<int:pedido_id>/rechazar/", rechazar_pedido, name="rechazar_pedido"),
     path("mis-pedidos/", mis_pedidos, name="mis_pedidos"),
-    path("pedido/<int:pedido_id>/pagar/", pagar_pedido, name="pagar_pedido"),
+    path("pedido/<int:pedido_id>/pagar/", Checkout, name="pagar_pedido"),
     path(
         "pedido/<int:pedido_id>/confirmar-pago/", confirmar_pago, name="confirmar_pago"
     ),
