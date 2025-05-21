@@ -1,74 +1,97 @@
 {% extends 'plantilla.html' %}
 {% block content %}
-<h2>Pedido #{{ pedido.id }}</h2>
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title mb-4 text-center">🧾 Pedido #{{ pedido.id }}</h2>
 
-{% if pedido.estado == "ACEPTADO" %}
-<form method="post">
-  {% csrf_token %}
-  <label for="tipo_entrega">Selecciona tipo de entrega:</label>
-  <select name="tipo_entrega" id="tipo_entrega" class="form-select" required onchange="mostrarDireccion()">
-    <option value="">Seleccione...</option>
-    <option value="retiro">Retiro en tienda</option>
-    <option value="despacho">Despacho a domicilio</option>
-  </select>
+      {% if pedido.estado == "ACEPTADO" %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="tipo_entrega" class="form-label">Selecciona tipo de entrega:</label>
+          <select name="tipo_entrega" id="tipo_entrega" class="form-select" required onchange="mostrarDireccion()">
+            <option value="">Seleccione...</option>
+            <option value="retiro">🏬 Retiro en tienda</option>
+            <option value="despacho">🚚 Despacho a domicilio</option>
+          </select>
+        </div>
 
-  <div id="infoDireccion" class="my-3 d-none">
-    <h5>Dirección:</h5>
-    <p id="textoDireccion" class="fw-bold text-primary"></p>
-    <div id="map" style="height: 400px;"></div>
-  </div>
-  <input type="hidden" name="latitud" id="latitud">
-  <input type="hidden" name="longitud" id="longitud">
-  <button type="submit" class="btn btn-primary mt-3">Confirmar Entrega</button>
-</form>
+        <div id="infoDireccion" class="my-3 p-3 bg-light border rounded d-none">
+          <h5 class="mb-2">📍 Dirección seleccionada:</h5>
+          <p id="textoDireccion" class="fw-bold text-primary"></p>
+          <div id="map" style="height: 400px;" class="rounded border"></div>
+        </div>
 
-{% elif pedido.estado == "LISTO_PAGO" %}
-<h4>Resumen del Pedido</h4>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Producto</th>
-      <th>Cantidad</th>
-      <th>Precio Unitario</th>
-      <th>Subtotal</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for detalle in pedido.detalles.all %}
-    <tr>
-      <td>{{ detalle.producto.descripcion }}</td>
-      <td>{{ detalle.cantidad }}</td>
-      <td>${{ detalle.precio_unitario }}</td>
-      <td>${{ detalle.precio_unitario|floatformat:2|add:""|floatformat:2|add:detalle.cantidad|floatformat:2 }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-  <tfoot>
-    <tr>
-      <th colspan="3" class="text-end">Total:</th>
-      <th>${{ total|floatformat:2 }}</th>
-    </tr>
-    <tr>
-      <th colspan="3" class="text-end">Total USD:</th>
-      <th>${{ total_usd|floatformat:2 }}</th>
-    </tr>
-  </tfoot>
-</table>
+        <input type="hidden" name="latitud" id="latitud">
+        <input type="hidden" name="longitud" id="longitud">
+        <div class="text-end">
+          <button type="submit" class="btn btn-success mt-3">
+            <i class="bi bi-check2-circle"></i> Confirmar Entrega
+          </button>
+        </div>
+      </form>
 
-<form method="post" style="display: inline;">
-  {% csrf_token %}
-  <input type="hidden" name="metodo_pago" value="transferencia">
-  <button type="submit" class="btn btn-outline-primary">Pagar por Transferencia</button>
-</form>
+      {% elif pedido.estado == "LISTO_PAGO" %}
+      <h4 class="mb-3">🛒 Resumen del Pedido</h4>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for detalle in pedido.detalles.all %}
+            <tr>
+              <td>{{ detalle.producto.descripcion }}</td>
+              <td>{{ detalle.cantidad }}</td>
+              <td>${{ detalle.precio_unitario }}</td>
+              <td>${{ detalle.precio_unitario|floatformat:0|add:""|floatformat:0|add:detalle.cantidad|floatformat:0 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot class="fw-bold">
+            <tr>
+              <td colspan="3" class="text-end">Total:</td>
+              <td>${{ total|floatformat:0 }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end">Total USD:</td>
+              <td>${{ total_usd|floatformat:2 }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
 
-<div class="mt-3">
+      <div class="d-flex flex-column flex-md-row gap-3 justify-content-end mt-4">
+       <div class="w-100 d-flex flex-wrap  flex-row justify-content-around gap-2"> 
+         <form method="post" class="d-flex justify-content-center align-items-center">
+          {% csrf_token %}
+          <input type="hidden" name="metodo_pago" value="transferencia">
+          <button type="submit" class="btn btn-outline-primary">
+            💵 Pagar por Transferencia
+          </button>
+        </form>
+       <div class="paypal-button-wrapper text-start">
   {{ paypal.render }}
+        </div>
+       </div>
+      </div>
+
+      {% else %}
+      <div class="alert alert-info mt-4">
+        Este pedido no está disponible para acciones en este momento.
+      </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
-{% else %}
-<p class="alert alert-info">Este pedido no está disponible para acciones en este momento.</p>
-{% endif %}
-
+<!-- Mapa y lógica de dirección -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3fEtB6sb6u13ctBJtd7NxeA8K7R4dSb8"></script>
 <script>
   const direccionCliente = {
@@ -102,21 +125,16 @@
     texto.textContent = datos.texto;
     infoDiv.classList.remove('d-none');
 
-    // Actualiza hidden inputs
     latInput.value = datos.lat;
     lngInput.value = datos.lng;
 
-    // Inicia o actualiza mapa
     const location = { lat: datos.lat, lng: datos.lng };
     if (!map) {
       map = new google.maps.Map(document.getElementById("map"), {
         center: location,
         zoom: 15,
       });
-      marker = new google.maps.Marker({
-        map: map,
-        position: location
-      });
+      marker = new google.maps.Marker({ map: map, position: location });
     } else {
       map.setCenter(location);
       marker.setPosition(location);
