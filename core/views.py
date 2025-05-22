@@ -7,6 +7,10 @@ from .forms import *
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Producto
+from .serializers import ProductoSerializer
 from django.contrib.auth.decorators import login_required
 
 
@@ -412,3 +416,22 @@ def enviar_mensaje_template(numero, nombre, numero_pedido, estado):
     print("Response status code:", response.status_code)
     print("Response body:", response.json())
     return response.status_code, response.json()
+
+
+@api_view(['GET'])
+def api_productos(request):
+    productos = Producto.objects.all()
+    serializer = ProductoSerializer(productos, many=True)
+    return Response(serializer.data)
+
+from rest_framework import status
+
+@api_view(['GET'])
+def api_producto_detalle(request, id):
+    try:
+        producto = Producto.objects.get(id=id)
+    except Producto.DoesNotExist:
+        return Response({'error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ProductoSerializer(producto)
+    return Response(serializer.data)
