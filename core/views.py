@@ -363,11 +363,22 @@ def panel_trabajador(request):
         },
     )
 
+from django.contrib.auth.models import User
+import re
+
 @login_required
 def perfil_usuario(request):
     perfil = PerfilUsuario.objects.get(user=request.user)
+    user = request.user
 
     if request.method == 'POST':
+        user.first_name = request.POST.get('nombre', '').strip()
+        user.last_name = request.POST.get('apellido', '').strip()
+        user.email = request.POST.get('email', '').strip()
+        user.save()
+
+        perfil.telefono = request.POST.get('telefono', '').strip()
+
         direccion = request.POST.get('direccion', '').strip()
         direccion = re.sub(' +', ' ', direccion)
 
@@ -379,7 +390,7 @@ def perfil_usuario(request):
         perfil.longitud = float(lng) if lng else None
         perfil.save()
 
-        messages.success(request, "Dirección guardada correctamente.")
+        messages.success(request, "Perfil actualizado correctamente.")
         return redirect('perfil_usuario')
 
     return render(request, 'perfil.html', {'perfil': perfil})

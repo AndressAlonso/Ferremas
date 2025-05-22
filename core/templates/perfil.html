@@ -3,30 +3,41 @@
 <div class="container py-4">
   <h2>Mi Perfil</h2>
 
-  <form method="post">
-    {% csrf_token %}
+<form method="post">
+  {% csrf_token %}
 
-    <div class="mb-3">
-      <label>Nombre:</label>
-      <input type="text" class="form-control" value="{{ user.get_full_name }}" readonly>
-    </div>
+  <div class="mb-3">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" class="form-control" value="{{ user.first_name }}" required>
+  </div>
 
-    <div class="mb-3">
-      <label>Correo:</label>
-      <input type="email" class="form-control" value="{{ user.email }}" readonly>
-    </div>
+  <div class="mb-3">
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" class="form-control" value="{{ user.last_name }}" required>
+  </div>
 
-    <div class="mb-3">
-      <label for="autocomplete">Dirección:</label>
-      <input id="autocomplete" name="direccion" class="form-control" placeholder="Buscar dirección..." required value="{{ perfil.direccion|default:'' }}">
-      <input type="hidden" name="latitud" id="latitud" value="{{ perfil.latitud }}">
-      <input type="hidden" name="longitud" id="longitud" value="{{ perfil.longitud }}">
-    </div>
+  <div class="mb-3">
+    <label for="email">Correo:</label>
+    <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}" required>
+  </div>
 
-    <div id="map" style="height: 400px;" class="my-3"></div>
+  <div class="mb-3">
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" name="telefono" class="form-control" value="{{ perfil.telefono|default:'' }}">
+  </div>
 
-<button id="guardarBtn" type="submit" class="btn btn-primary disabled" disabled >Guardar Dirección</button>
-  </form>
+  <div class="mb-3">
+    <label for="autocomplete">Dirección:</label>
+    <input id="autocomplete" name="direccion" class="form-control" placeholder="Buscar dirección..." required value="{{ perfil.direccion|default:'' }}">
+    <input type="hidden" name="latitud" id="latitud" value="{{ perfil.latitud }}">
+    <input type="hidden" name="longitud" id="longitud" value="{{ perfil.longitud }}">
+  </div>
+
+  <div id="map" style="height: 400px;" class="my-3"></div>
+
+  <button id="guardarBtn" type="submit" class="btn btn-primary disabled" disabled>Guardar Cambios</button>
+</form>
+
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3fEtB6sb6u13ctBJtd7NxeA8K7R4dSb8&libraries=places"></script>

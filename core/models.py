@@ -78,11 +78,6 @@ class Producto(models.Model):
     stock = models.IntegerField()
     imagen = models.CharField(max_length=255)
     precio = models.IntegerField()  
-    ram = models.CharField(max_length=80, default='No Registrado')
-    procesador = models.CharField(max_length=80, default='No Registrado')
-    almacenamiento = models.CharField(max_length=80, default='No Registrado')
-    tamaño_pantalla = models.CharField(max_length=80, default='No Registrado')
-    capacidad_bateria = models.CharField(max_length=80, default='No Registrado')
     color = models.CharField(max_length=80, default='No Registrado')
 
     def __str__(self):
