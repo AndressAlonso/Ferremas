@@ -39,7 +39,25 @@
 </form>
 
 </div>
+<!-- <script>
+  function verificarDireccionConGeocoding(lat, lng) {
+  const apiKey = 'AIzaSyCr7rRoUvnqqx1PQN21hFyvJOmmusZl0Vs';
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
 
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'OK') {
+        console.log('✅ Dirección confirmada por Geocoding:', data.results[0].formatted_address);
+      } else {
+        console.error('❌ Geocoding error:', data.status);
+      }
+    })
+    .catch(error => {
+      console.error('❌ Error de red:', error);
+    });
+  }
+</script> -->
 <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
 <script>
   let map, marker, autocomplete, direccionValida = false;
@@ -81,26 +99,47 @@
 
   function onPlaceChanged() {
     const place = autocomplete.getPlace();
-    if (!place.geometry) return;
 
-    const lat = place.geometry.location.lat();
-    const lng = place.geometry.location.lng();
+    if (!place.place_id) {
+      console.warn("No hay place_id");
+      direccionValida = false;
+      document.getElementById('guardarBtn').disabled = true;
+      return;
+    }
 
-    document.getElementById('latitud').value = lat;
-    document.getElementById('longitud').value = lng;
+    const service = new google.maps.places.PlacesService(map);
+    service.getDetails({ placeId: place.place_id }, function (result, status) {
+      console.log("Status del lugar:", status); 
 
-    marker.setPosition(place.geometry.location);
-    map.setCenter(place.geometry.location);
+      if (status !== google.maps.places.PlacesServiceStatus.OK) {
+        alert("Dirección no válida. Intenta con otra.");
+        direccionValida = false;
+        document.getElementById('guardarBtn').disabled = true;
+        document.getElementById('guardarBtn').classList.add('disabled');
+        return;
+      }
 
-    direccionValida = true;
-    document.getElementById('guardarBtn').disabled = false;
-    document.getElementById('guardarBtn').classList.remove('disabled');
+      const lat = result.geometry.location.lat();
+      const lng = result.geometry.location.lng();
+
+      document.getElementById('latitud').value = lat;
+      document.getElementById('longitud').value = lng;
+
+      marker.setPosition(result.geometry.location);
+      map.setCenter(result.geometry.location);
+
+      direccionValida = true;
+      document.getElementById('guardarBtn').disabled = false;
+      document.getElementById('guardarBtn').classList.remove('disabled');
+    });
   }
 
   window.initAutocomplete = initAutocomplete;
 </script>
 
 <script>
+  // Inicializa el autocompletado al cargar
   google.maps.event.addDomListener(window, 'load', initAutocomplete);
 </script>
+
 {% endblock %}
